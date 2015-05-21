@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 
 import dev.thenamegenerator.MasterQuestAlpha.collision.Collision;
 import dev.thenamegenerator.MasterQuestAlpha.entities.Chicken;
+import dev.thenamegenerator.MasterQuestAlpha.entities.Elephant;
 import dev.thenamegenerator.MasterQuestAlpha.entities.MainPlayer;
 import dev.thenamegenerator.MasterQuestAlpha.input.InputHandler;
 import dev.thenamegenerator.MasterQuestAlpha.world.MovingMap;
@@ -22,6 +23,7 @@ public class GameManager extends Canvas{
 	private Collision collision;
 	private MovingMap camera;
 	private Chicken chicken;
+	private Elephant elephant;
 	private InputHandler input;
 	
 	private BufferedImage world;
@@ -33,6 +35,7 @@ public class GameManager extends Canvas{
 	public void init(){
 		player = new MainPlayer(input);
 		chicken = new Chicken();
+		elephant = new Elephant();
 		camera = new MovingMap(0,0);
 		renderer = new WorldRenderer();
 		collision = new Collision(World.StartMap);
@@ -56,15 +59,23 @@ public class GameManager extends Canvas{
 		return camera;
 	}
 	
+	public Elephant getElephant(){
+		return elephant;
+	}
+	
 	public void tick(){
 		camera.setX(-1*player.getWorldX()+224);
 		camera.setY(-1*player.getWorldY()+128);
 		
 		player.move();
 		chicken.move();
+		elephant.move();
 		
 		chicken.setX(camera.getX() + 224 + chicken.getDispositionX());
 		chicken.setY(camera.getY() + 128 + chicken.getDispositionY());
+		
+		elephant.setX(camera.getX() + 224 + elephant.getDispositionX());
+		elephant.setY(camera.getY() + 128 + elephant.getDispositionY());
 	}
 	
 }

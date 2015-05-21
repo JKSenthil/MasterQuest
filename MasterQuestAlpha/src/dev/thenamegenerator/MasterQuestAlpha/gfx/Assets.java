@@ -7,11 +7,14 @@ public class Assets
    private static String PlayerRight = "player.png";
    private static String PlayerLeft = "playerLeft.png";
    
-   public static BufferedImage image, image2, image3;
+   public static BufferedImage image, image2, image3, image4;
    public static BufferedImage grass, water, path, dirt;
    public static BufferedImage window, wall, roof, door;
    public static BufferedImage playerRight, playerLeft;
+   
+   //entity images
    public static BufferedImage CL, CR, CD, CU;
+   public static BufferedImage ER, EL;
    
    public static void init(){
 	   image = ImageLoader.loadImage(fileName);
@@ -37,6 +40,11 @@ public class Assets
 	   CR = sheet.crop(32, 0, 32, 32);
 	   CL = sheet.crop(32, 32, 32, 32);
 	   CU = sheet.crop(0, 32, 32, 32);
+	   
+	   image4 = ImageLoader.loadImage("Elephant.png");
+	   sheet.changeImage(image4);
+	   EL = sheet.crop(0, 0, 64, 32);
+	   ER = sheet.crop(0, 32, 64, 32);
    }
    
 }
