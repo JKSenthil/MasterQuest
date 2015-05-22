@@ -9,7 +9,7 @@ public class Elephant extends Entity{
 		left = Assets.EL;
 		right = Assets.ER;
 		setSprite(left);
-		initLocation(224, 300, 224, 300);
+		initLocation(224, 256, 224, 256);
 		speed = 3;
 	}
 	@Override
@@ -22,7 +22,7 @@ public class Elephant extends Entity{
 				temp = rand.nextInt(4);
 				if(temp == 0){
 					dx = 2;
-					if(checkCollision(32, 0)){dx = 0; isMoving = false;}	
+					if(checkCollision(64, 0)){dx = 0; isMoving = false;}
 					setSprite(right);
 				}
 				if(temp == 1){
@@ -33,10 +33,12 @@ public class Elephant extends Entity{
 				if(temp == 2){
 					dy = 2;
 					if(checkCollision(0, 32)){dy = 0; isMoving = false;}	
+					if(checkCollision(0, 64)){dy = 0; isMoving = false;}	
 				}
 				if(temp == 3){
 					dy = -2;
 					if(checkCollision(0, -32)){dy = 0; isMoving = false;}	
+					if(checkCollision(0, -64)){dy = 0; isMoving = false;}	
 				}
 				time = System.nanoTime();
 				prevWorldX = worldX;

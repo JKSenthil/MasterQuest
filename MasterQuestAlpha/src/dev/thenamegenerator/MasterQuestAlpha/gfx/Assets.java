@@ -12,6 +12,8 @@ public class Assets
    public static BufferedImage window, wall, roof, door;
    public static BufferedImage playerRight, playerLeft;
    
+   public static BufferedImage inventory;
+   
    //entity images
    public static BufferedImage CL, CR, CD, CU;
    public static BufferedImage ER, EL;
@@ -45,6 +47,8 @@ public class Assets
 	   sheet.changeImage(image4);
 	   EL = sheet.crop(0, 0, 64, 32);
 	   ER = sheet.crop(0, 32, 64, 32);
+	   
+	   inventory = ImageLoader.loadImage("Inventory.png");
    }
    
 }

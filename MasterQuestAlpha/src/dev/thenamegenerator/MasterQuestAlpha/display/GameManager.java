@@ -8,6 +8,7 @@ import dev.thenamegenerator.MasterQuestAlpha.entities.Chicken;
 import dev.thenamegenerator.MasterQuestAlpha.entities.Elephant;
 import dev.thenamegenerator.MasterQuestAlpha.entities.MainPlayer;
 import dev.thenamegenerator.MasterQuestAlpha.input.InputHandler;
+import dev.thenamegenerator.MasterQuestAlpha.inventory.Inventory;
 import dev.thenamegenerator.MasterQuestAlpha.world.MovingMap;
 import dev.thenamegenerator.MasterQuestAlpha.world.World;
 import dev.thenamegenerator.MasterQuestAlpha.world.WorldRenderer;
@@ -25,6 +26,7 @@ public class GameManager extends Canvas{
 	private Chicken chicken;
 	private Elephant elephant;
 	private InputHandler input;
+	private Inventory inventory;
 	
 	private BufferedImage world;
 	
@@ -34,6 +36,7 @@ public class GameManager extends Canvas{
 	
 	public void init(){
 		player = new MainPlayer(input);
+		inventory = new Inventory(input);
 		chicken = new Chicken();
 		elephant = new Elephant();
 		camera = new MovingMap(0,0);
@@ -63,19 +66,28 @@ public class GameManager extends Canvas{
 		return elephant;
 	}
 	
+	public Inventory getInventory(){
+		return inventory;
+	}
+	
 	public void tick(){
-		camera.setX(-1*player.getWorldX()+224);
-		camera.setY(-1*player.getWorldY()+128);
-		
-		player.move();
-		chicken.move();
-		elephant.move();
-		
-		chicken.setX(camera.getX() + 224 + chicken.getDispositionX());
-		chicken.setY(camera.getY() + 128 + chicken.getDispositionY());
-		
-		elephant.setX(camera.getX() + 224 + elephant.getDispositionX());
-		elephant.setY(camera.getY() + 128 + elephant.getDispositionY());
+		inventory.check();
+		if(inventory.renderInventory){
+			
+		}else if(!inventory.renderInventory){
+			camera.setX(-1*player.getWorldX()+224);
+			camera.setY(-1*player.getWorldY()+128);
+			
+			player.move();
+			chicken.move();
+			elephant.move();
+			
+			chicken.setX(camera.getX() + 224 + chicken.getDispositionX());
+			chicken.setY(camera.getY() + 128 + chicken.getDispositionY());
+			
+			elephant.setX(camera.getX() + 224 + elephant.getDispositionX());
+			elephant.setY(camera.getY() + 256 + elephant.getDispositionY());
+		}
 	}
 	
 }

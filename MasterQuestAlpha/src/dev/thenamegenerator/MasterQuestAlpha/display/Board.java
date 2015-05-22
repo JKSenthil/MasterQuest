@@ -73,6 +73,9 @@ public class Board extends Canvas implements Runnable
 		g.drawImage(manager.getPlayer().getImage(), manager.getPlayer().getX(), manager.getPlayer().getY(), this);
 		g.drawImage(manager.getChicken().getImage(), manager.getChicken().getX(),manager.getChicken().getY(), this);
 		g.drawImage(manager.getElephant().getImage(), manager.getElephant().getX(), manager.getElephant().getY(), this);
+		if(manager.getInventory().renderInventory){
+			g.drawImage(manager.getInventory().getImage(), 320, 448, this);
+		}
 		//END RENDER
 		g.dispose();
 		bs.show();
