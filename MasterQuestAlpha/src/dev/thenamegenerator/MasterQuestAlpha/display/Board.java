@@ -27,8 +27,6 @@ public class Board extends Canvas implements Runnable
 
     public Board(){
         setFocusable(true);
-        
-        Assets.init();
     	input = new InputHandler(this);
     }
     
@@ -74,7 +72,7 @@ public class Board extends Canvas implements Runnable
 		g.drawImage(manager.getChicken().getImage(), manager.getChicken().getX(),manager.getChicken().getY(), this);
 		g.drawImage(manager.getElephant().getImage(), manager.getElephant().getX(), manager.getElephant().getY(), this);
 		if(manager.getInventory().renderInventory){
-			g.drawImage(manager.getInventory().getImage(), 320, 448, this);
+			g.drawImage(manager.getInventory().getImage(), 32, 32, this);
 		}
 		//END RENDER
 		g.dispose();

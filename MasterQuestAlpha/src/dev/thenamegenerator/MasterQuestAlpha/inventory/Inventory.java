@@ -22,14 +22,14 @@ public class Inventory {
 	}
 	
 	public void check(){
-		if(input != null){
+		if(input.e.isPressed()){
+			if(!renderInventory){
+				renderInventory = true;
+			}else{
+				renderInventory = false;
+			}
 			if(input.e.isPressed()){
-				if(renderInventory){
-					renderInventory = false;
-				}
-				if(!renderInventory){
-					renderInventory = true;
-				}
+				input.reset();
 			}
 		}
 	}

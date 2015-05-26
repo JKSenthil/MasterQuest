@@ -2,7 +2,7 @@ package dev.thenamegenerator.MasterQuestAlpha.gfx;
 import java.awt.image.*;
 public class Assets
 {
-   private static String fileName = "TileSheetg.png";
+   private static String fileName = "TileSheet.png";
    private static String houseTile = "HouseTile.png";
    private static String PlayerRight = "player.png";
    private static String PlayerLeft = "playerLeft.png";

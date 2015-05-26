@@ -72,9 +72,7 @@ public class GameManager extends Canvas{
 	
 	public void tick(){
 		inventory.check();
-		if(inventory.renderInventory){
-			
-		}else if(!inventory.renderInventory){
+		if(!inventory.renderInventory){
 			camera.setX(-1*player.getWorldX()+224);
 			camera.setY(-1*player.getWorldY()+128);
 			
