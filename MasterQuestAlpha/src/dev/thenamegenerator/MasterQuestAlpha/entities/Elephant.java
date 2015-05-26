@@ -33,12 +33,12 @@ public class Elephant extends Entity{
 				if(temp == 2){
 					dy = 2;
 					if(checkCollision(0, 32)){dy = 0; isMoving = false;}	
-					if(checkCollision(0, 64)){dy = 0; isMoving = false;}	
+					if(checkCollision(32, 32)){dy = 0; isMoving = false;}	
 				}
 				if(temp == 3){
 					dy = -2;
 					if(checkCollision(0, -32)){dy = 0; isMoving = false;}	
-					if(checkCollision(0, -64)){dy = 0; isMoving = false;}	
+					if(checkCollision(32, -32)){dy = 0; isMoving = false;}	
 				}
 				time = System.nanoTime();
 				prevWorldX = worldX;
