@@ -18,6 +18,10 @@ public class Assets
    public static BufferedImage CL, CR, CD, CU;
    public static BufferedImage ER, EL;
    
+   //food icon images
+   public static BufferedImage carrot;
+   public static BufferedImage banana;
+   
    public static void init(){
 	   image = ImageLoader.loadImage(fileName);
 	   SpriteSheet sheet = new SpriteSheet(image);
@@ -49,6 +53,9 @@ public class Assets
 	   ER = sheet.crop(0, 32, 64, 32);
 	   
 	   inventory = ImageLoader.loadImage("Inventory.png");
+	   
+	   carrot = ImageLoader.loadImage("Carrot.png");
+	   banana = ImageLoader.loadImage("Banana.png");
    }
    
 }
