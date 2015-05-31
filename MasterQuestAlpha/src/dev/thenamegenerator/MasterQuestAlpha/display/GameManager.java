@@ -8,7 +8,8 @@ import dev.thenamegenerator.MasterQuestAlpha.entities.Chicken;
 import dev.thenamegenerator.MasterQuestAlpha.entities.Elephant;
 import dev.thenamegenerator.MasterQuestAlpha.entities.MainPlayer;
 import dev.thenamegenerator.MasterQuestAlpha.input.InputHandler;
-import dev.thenamegenerator.MasterQuestAlpha.inventory.Inventory;
+import dev.thenamegenerator.MasterQuestAlpha.input.MouseHandler;
+import dev.thenamegenerator.MasterQuestAlpha.inventory.InventoryManager;
 import dev.thenamegenerator.MasterQuestAlpha.world.MovingMap;
 import dev.thenamegenerator.MasterQuestAlpha.world.World;
 import dev.thenamegenerator.MasterQuestAlpha.world.WorldRenderer;
@@ -19,24 +20,29 @@ public class GameManager extends Canvas{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private MainPlayer player;
 	private WorldRenderer renderer;
 	private Collision collision;
 	private MovingMap camera;
 	private Chicken chicken;
 	private Elephant elephant;
+	
 	private InputHandler input;
-	private Inventory inventory;
+	private MouseHandler mouseHandler;
+	
+	private InventoryManager inventoryManager;
 	
 	private BufferedImage world;
 	
-	public GameManager(InputHandler input){
+	public GameManager(InputHandler input, MouseHandler mouseHandler){
 		this.input = input;
+		this.mouseHandler = mouseHandler;
 	}
 	
 	public void init(){
 		player = new MainPlayer(input);
-		inventory = new Inventory(input);
+		inventoryManager = new InventoryManager(input, mouseHandler);
 		chicken = new Chicken();
 		elephant = new Elephant();
 		camera = new MovingMap(0,0);
@@ -66,13 +72,13 @@ public class GameManager extends Canvas{
 		return elephant;
 	}
 	
-	public Inventory getInventory(){
-		return inventory;
+	public InventoryManager getInventoryManager(){
+		return inventoryManager;
 	}
 	
 	public void tick(){
-		inventory.check();
-		if(!inventory.renderInventory){
+		inventoryManager.tick();
+		if(!inventoryManager.onInventoryScreen()){
 			camera.setX(-1*player.getWorldX()+224);
 			camera.setY(-1*player.getWorldY()+128);
 			
@@ -87,5 +93,4 @@ public class GameManager extends Canvas{
 			elephant.setY(camera.getY() + 256 + elephant.getDispositionY());
 		}
 	}
-	
 }

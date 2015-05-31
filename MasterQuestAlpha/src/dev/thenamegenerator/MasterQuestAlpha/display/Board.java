@@ -5,6 +5,7 @@ import java.awt.image.BufferStrategy;
 
 import dev.thenamegenerator.MasterQuestAlpha.gfx.Assets;
 import dev.thenamegenerator.MasterQuestAlpha.input.InputHandler;
+import dev.thenamegenerator.MasterQuestAlpha.input.MouseHandler;
 
 public class Board extends Canvas implements Runnable
 {
@@ -12,6 +13,8 @@ public class Board extends Canvas implements Runnable
 	private static final long serialVersionUID = 1L;
 
     private InputHandler input;
+    private MouseHandler mouseHandler;
+    
     private GameManager manager;
     
     Graphics g2d;
@@ -24,10 +27,13 @@ public class Board extends Canvas implements Runnable
     
     private int frames = 0;
     private int ticks = 0;
+    
+    private boolean cont = true;
 
     public Board(){
-        setFocusable(true);
+    	setFocusable(true);
     	input = new InputHandler(this);
+    	mouseHandler = new MouseHandler(this);
     }
     
     public synchronized void start(){
@@ -49,7 +55,7 @@ public class Board extends Canvas implements Runnable
     
     public void init(){
     	Assets.init();
-        manager = new GameManager(input);
+        manager = new GameManager(input, mouseHandler);
         manager.init();
     }
     
@@ -69,10 +75,17 @@ public class Board extends Canvas implements Runnable
 		//RENDER HERE
 		g.drawImage(manager.getCamera().getMapImage(), manager.getCamera().getX(), manager.getCamera().getY(), this);
 		g.drawImage(manager.getPlayer().getImage(), manager.getPlayer().getX(), manager.getPlayer().getY(), this);
-		g.drawImage(manager.getChicken().getImage(), manager.getChicken().getX(),manager.getChicken().getY(), this);
+		g.drawImage(manager.getChicken().getImage(), manager.getChicken().getX(),manager.getChicken().getY(), this);			
 		g.drawImage(manager.getElephant().getImage(), manager.getElephant().getX(), manager.getElephant().getY(), this);
-		if(manager.getInventory().renderInventory){
-			g.drawImage(manager.getInventory().getImage(), 32, 32, this);
+		if(manager.getInventoryManager().onInventoryScreen()){
+			g.drawImage(manager.getInventoryManager().getInventory().getImage(), 32, 32, this);
+			if(cont){
+				for(int i = 0; i<manager.getInventoryManager().getPlayerItems().size(); i++){
+					manager.getInventoryManager().getInventoryScrollScreen().addItem(manager.getInventoryManager().getPlayerItems().get(i));
+				}
+				cont = false;
+			}
+			g.drawImage(manager.getInventoryManager().getInventoryScrollScreen().listOfItems, 128, 91, this);
 		}
 		//END RENDER
 		g.dispose();
@@ -105,7 +118,7 @@ public class Board extends Canvas implements Runnable
 			frames++;
 			render();
 			if(System.currentTimeMillis() - lastTimer >= 1000){
-				lastTimer+=1000;
+				lastTimer += 1000;
 				System.out.println("Frames: " + frames + " Ticks: " + ticks);
 				frames = 0;
 				ticks = 0;
@@ -113,5 +126,4 @@ public class Board extends Canvas implements Runnable
 		}
 		stop();
     }
-
 } 

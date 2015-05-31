@@ -13,7 +13,7 @@ public class MainPlayer extends Entity{
 		initLocation(224, 128, 224, 128);
 		setSprite(Assets.playerRight);
 		time = System.nanoTime();
-		speed = 10;
+		speed = 5;
 	}
  
     public boolean isBothDirectionsUsed(){

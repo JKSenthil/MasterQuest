@@ -8,7 +8,7 @@ public class ImageLoader {
 	
 	public static BufferedImage loadImage(String path){
 		try {
-			return ImageIO.read(ImageLoader.class.getResource(path));
+			return ImageIO.read(ImageLoader.class.getResourceAsStream("/"+path));
 		} catch (IOException e) {
 			System.exit(1);
 		}
