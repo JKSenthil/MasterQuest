@@ -13,20 +13,25 @@ public class InventoryManager {
 	private Inventory inventory;
 	private InventoryScrollScreen scrollScreen;
 	
-	ArrayList<Item> playerItems = new ArrayList<Item>();
+	ArrayList<Item> playerWeapons = new ArrayList<Item>();
+	ArrayList<Item> playerArmor = new ArrayList<Item>();
+	ArrayList<Item> playerPotion = new ArrayList<Item>();
+	ArrayList<Item> playerMagic = new ArrayList<Item>();
+	ArrayList<Item> playerMisc = new ArrayList<Item>();
 	
 	private boolean onInventoryScreen = false;
+	private boolean cont = true;
 	
 	public InventoryManager(InputHandler input, MouseHandler mouseHandler){
-		inventory = new Inventory(input);
+		inventory = new Inventory(input, mouseHandler);
 		scrollScreen = new InventoryScrollScreen(mouseHandler);
 		
-		playerItems.add(new Banana());
-		playerItems.add(new Carrot());
+		playerMisc.add(new Banana());
+		playerMisc.add(new Carrot());
 	}
 	
 	public ArrayList<Item> getPlayerItems(){
-		return playerItems;
+		return playerMisc;
 	}
 	
 	public Inventory getInventory(){
@@ -48,6 +53,18 @@ public class InventoryManager {
 		}
 		if(!inventory.renderInventory){
 			onInventoryScreen = false;
+		}
+		if(onInventoryScreen){
+			if(inventory.inWeapons){
+				scrollScreen.reset();
+				cont = true;
+				if(cont){
+					for(int i = 0; i<playerWeapons.size(); i++){
+						scrollScreen.addItem(playerWeapons.get(i));
+					}
+					cont = false;
+				}
+			}
 		}
 	}	
 }

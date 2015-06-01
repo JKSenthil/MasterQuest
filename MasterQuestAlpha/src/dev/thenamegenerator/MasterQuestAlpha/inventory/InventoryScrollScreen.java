@@ -10,6 +10,7 @@ import dev.thenamegenerator.MasterQuestAlpha.items.Item;
 public class InventoryScrollScreen {
 	
 	public BufferedImage listOfItems;
+	
 	Graphics g2d;
 	
 	public int width = 200;

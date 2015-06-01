@@ -15,8 +15,7 @@ public class MouseHandler implements MouseListener{
 		private int numTimesPressed = 0;
         private boolean pressed = false;
         
-        @SuppressWarnings("unused")
-		private int x, y;
+		public int x, y;
 
         public int getNumTimesPressed() {
             return numTimesPressed;
