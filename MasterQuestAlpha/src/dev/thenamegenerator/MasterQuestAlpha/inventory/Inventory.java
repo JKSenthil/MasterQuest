@@ -86,6 +86,7 @@ public class Inventory {
 						reset();
 						inMisc = true;
 					}
+					mouseHandler.mouse.toggle(false);
 				}
 			}
 		}

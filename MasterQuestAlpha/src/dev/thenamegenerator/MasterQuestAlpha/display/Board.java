@@ -27,8 +27,6 @@ public class Board extends Canvas implements Runnable
     
     private int frames = 0;
     private int ticks = 0;
-    
-    private boolean cont = true;
 
     public Board(){
     	setFocusable(true);
