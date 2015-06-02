@@ -4,9 +4,7 @@ import java.util.ArrayList;
 
 import dev.thenamegenerator.MasterQuestAlpha.input.InputHandler;
 import dev.thenamegenerator.MasterQuestAlpha.input.MouseHandler;
-import dev.thenamegenerator.MasterQuestAlpha.items.Banana;
-import dev.thenamegenerator.MasterQuestAlpha.items.Carrot;
-import dev.thenamegenerator.MasterQuestAlpha.items.Item;
+import dev.thenamegenerator.MasterQuestAlpha.items.*;
 
 public class InventoryManager {
 	
@@ -26,8 +24,10 @@ public class InventoryManager {
 		inventory = new Inventory(input, mouseHandler);
 		scrollScreen = new InventoryScrollScreen(mouseHandler);
 		
-		playerMisc.add(new Banana());
-		playerMisc.add(new Carrot());
+		addItem(new Banana());
+		addItem(new Carrot());
+		addItem(new IronShortSword());
+		
 	}
 	
 	public ArrayList<Item> getPlayerItems(){
@@ -46,12 +46,23 @@ public class InventoryManager {
 		return scrollScreen;
 	}
 	
+	public void addItem(Item item){
+		if(item.getType().equalsIgnoreCase("food")){
+			playerMisc.add(item);
+		}else if(item.getType().equalsIgnoreCase("weapon")){
+			playerWeapons.add(item);
+		}else if(item.getType().equalsIgnoreCase("armor")){
+			playerArmor.add(item);
+		}else if(item.getType().equalsIgnoreCase("potion")){
+			playerPotion.add(item);
+		}
+	}
+	
 	public void tick(){
 		inventory.check();
 		if(inventory.renderInventory){
 			onInventoryScreen = true;
-		}
-		if(!inventory.renderInventory){
+		}else if(!inventory.renderInventory){
 			onInventoryScreen = false;
 		}
 		if(onInventoryScreen){
@@ -61,6 +72,42 @@ public class InventoryManager {
 				if(cont){
 					for(int i = 0; i<playerWeapons.size(); i++){
 						scrollScreen.addItem(playerWeapons.get(i));
+					}
+					cont = false;
+				}
+			}else if(inventory.inArmor){
+				scrollScreen.reset();
+				cont = true;
+				if(cont){
+					for(int i = 0; i<playerArmor.size(); i++){
+						scrollScreen.addItem(playerArmor.get(i));
+					}
+					cont = false;
+				}
+			}else if(inventory.inPotion){
+				scrollScreen.reset();
+				cont = true;
+				if(cont){
+					for(int i = 0; i<playerPotion.size(); i++){
+						scrollScreen.addItem(playerPotion.get(i));
+					}
+					cont = false;
+				}
+			}else if(inventory.inMagic){
+				scrollScreen.reset();
+				cont = true;
+				if(cont){
+					for(int i = 0; i<playerMagic.size(); i++){
+						scrollScreen.addItem(playerMagic.get(i));
+					}
+					cont = false;
+				}
+			}else if(inventory.inMisc){
+				scrollScreen.reset();
+				cont = true;
+				if(cont){
+					for(int i = 0; i<playerMisc.size(); i++){
+						scrollScreen.addItem(playerMisc.get(i));
 					}
 					cont = false;
 				}

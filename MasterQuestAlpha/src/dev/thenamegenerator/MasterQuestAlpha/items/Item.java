@@ -32,4 +32,7 @@ public class Item {
 		return icon;
 	}
 	
+	public String getType(){
+		return type;
+	}
 }

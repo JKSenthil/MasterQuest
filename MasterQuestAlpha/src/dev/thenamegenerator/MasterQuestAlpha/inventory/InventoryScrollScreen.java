@@ -32,7 +32,7 @@ public class InventoryScrollScreen {
 			g2d.drawImage(item.getIcon(), 0, reference, null);
 			reference+=32;
 			g2d.setColor(Color.BLACK);
-			g2d.drawString(item.getName(), 30, reference-11);
+			g2d.drawString(item.getName(), 40, reference-11);
 			g2d.drawLine(0, reference, width, reference);
 	}
 	

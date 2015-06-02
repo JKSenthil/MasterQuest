@@ -1,5 +1,7 @@
 package dev.thenamegenerator.MasterQuestAlpha.items;
 
-public class Potion {
-
+public class Potion extends Item{
+	public Potion(){
+		type = "potion";
+	}
 }

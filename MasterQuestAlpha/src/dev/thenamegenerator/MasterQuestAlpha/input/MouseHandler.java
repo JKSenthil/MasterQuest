@@ -12,7 +12,7 @@ public class MouseHandler implements MouseListener{
 	}
 	
 	public class Mouse{
-		private int numTimesPressed = 0;
+		public int numTimesPressed = 0;
         private boolean pressed = false;
         
 		public int x, y;
@@ -56,5 +56,4 @@ public class MouseHandler implements MouseListener{
 	public void mouseExited(MouseEvent e) {
 		
 	}
-
 }
