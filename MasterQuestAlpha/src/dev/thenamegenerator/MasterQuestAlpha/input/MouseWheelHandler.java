@@ -15,7 +15,7 @@ public class MouseWheelHandler implements MouseWheelListener{
 		board.addMouseWheelListener(this);
 	}
 	
-	Wheel wheel = new Wheel();
+	public Wheel wheel = new Wheel();
 
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		wheel.noches = e.getWheelRotation();

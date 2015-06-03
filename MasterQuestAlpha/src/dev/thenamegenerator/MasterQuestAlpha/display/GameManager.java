@@ -9,6 +9,7 @@ import dev.thenamegenerator.MasterQuestAlpha.entities.Elephant;
 import dev.thenamegenerator.MasterQuestAlpha.entities.MainPlayer;
 import dev.thenamegenerator.MasterQuestAlpha.input.InputHandler;
 import dev.thenamegenerator.MasterQuestAlpha.input.MouseHandler;
+import dev.thenamegenerator.MasterQuestAlpha.input.MouseWheelHandler;
 import dev.thenamegenerator.MasterQuestAlpha.inventory.InventoryManager;
 import dev.thenamegenerator.MasterQuestAlpha.world.MovingMap;
 import dev.thenamegenerator.MasterQuestAlpha.world.World;
@@ -30,19 +31,21 @@ public class GameManager extends Canvas{
 	
 	private InputHandler input;
 	private MouseHandler mouseHandler;
+	private MouseWheelHandler mouseWheelHandler;
 	
 	private InventoryManager inventoryManager;
 	
 	private BufferedImage world;
 	
-	public GameManager(InputHandler input, MouseHandler mouseHandler){
+	public GameManager(InputHandler input, MouseHandler mouseHandler, MouseWheelHandler mouseWheelHandler){
 		this.input = input;
 		this.mouseHandler = mouseHandler;
+		this.mouseWheelHandler = mouseWheelHandler;
 	}
 	
 	public void init(){
 		player = new MainPlayer(input);
-		inventoryManager = new InventoryManager(input, mouseHandler);
+		inventoryManager = new InventoryManager(input, mouseHandler, mouseWheelHandler);
 		chicken = new Chicken();
 		elephant = new Elephant();
 		camera = new MovingMap(0,0);

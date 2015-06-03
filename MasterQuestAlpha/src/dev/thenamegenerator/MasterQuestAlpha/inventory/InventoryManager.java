@@ -4,12 +4,16 @@ import java.util.ArrayList;
 
 import dev.thenamegenerator.MasterQuestAlpha.input.InputHandler;
 import dev.thenamegenerator.MasterQuestAlpha.input.MouseHandler;
+import dev.thenamegenerator.MasterQuestAlpha.input.MouseWheelHandler;
 import dev.thenamegenerator.MasterQuestAlpha.items.*;
 
 public class InventoryManager {
 	
 	private Inventory inventory;
 	private InventoryScrollScreen scrollScreen;
+	
+	//TEST
+	private MouseWheelHandler mouseWheelHandler;
 	
 	ArrayList<Item> playerWeapons = new ArrayList<Item>();
 	ArrayList<Item> playerArmor = new ArrayList<Item>();
@@ -20,7 +24,10 @@ public class InventoryManager {
 	private boolean onInventoryScreen = false;
 	private boolean cont = true;
 	
-	public InventoryManager(InputHandler input, MouseHandler mouseHandler){
+	public InventoryManager(InputHandler input, MouseHandler mouseHandler, MouseWheelHandler mouseWheelHandler){
+		//test
+		this.mouseWheelHandler = mouseWheelHandler;
+		
 		inventory = new Inventory(input, mouseHandler);
 		scrollScreen = new InventoryScrollScreen(mouseHandler);
 		
@@ -66,6 +73,15 @@ public class InventoryManager {
 			onInventoryScreen = false;
 		}
 		if(onInventoryScreen){
+			if(mouseWheelHandler.wheel.noches > 0){
+				System.out.println("Mouse Wheel Scolls Down");
+				System.out.println(mouseWheelHandler.wheel.noches);
+				mouseWheelHandler.wheel.noches = 0;
+			}else if(mouseWheelHandler.wheel.noches < 0){
+				System.out.println("Mouse Wheel Scolls Up");
+				System.out.println(mouseWheelHandler.wheel.noches);
+				mouseWheelHandler.wheel.noches = 0;
+			}	
 			if(inventory.inWeapons){
 				scrollScreen.reset();
 				cont = true;

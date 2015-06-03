@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import dev.thenamegenerator.MasterQuestAlpha.gfx.Assets;
 import dev.thenamegenerator.MasterQuestAlpha.input.InputHandler;
 import dev.thenamegenerator.MasterQuestAlpha.input.MouseHandler;
+import dev.thenamegenerator.MasterQuestAlpha.input.MouseWheelHandler;
 
 public class Board extends Canvas implements Runnable
 {
@@ -17,13 +18,14 @@ public class Board extends Canvas implements Runnable
 
     private InputHandler input;
     private MouseHandler mouseHandler;
+    private MouseWheelHandler mouseWheelHandler;
     
     private GameManager manager;
     
     Graphics g2d;
     
     Graphics2D pic2D;
-    private BufferedImage background = new BufferedImage(480,374, BufferedImage.TYPE_USHORT_GRAY);
+    private BufferedImage background = new BufferedImage(480,374, BufferedImage.TYPE_BYTE_GRAY);
     boolean backgroundDo = true;
     
     public Thread thread;
@@ -38,9 +40,12 @@ public class Board extends Canvas implements Runnable
 
     public Board(){
     	pic2D = background.createGraphics();
+    	pic2D.setColor(Color.WHITE);
+    	
     	setFocusable(true);
     	input = new InputHandler(this);
     	mouseHandler = new MouseHandler(this);
+    	mouseWheelHandler = new MouseWheelHandler(this);
     }
     
     public synchronized void start(){
@@ -62,7 +67,7 @@ public class Board extends Canvas implements Runnable
     
     public void init(){
     	Assets.init();
-        manager = new GameManager(input, mouseHandler);
+        manager = new GameManager(input, mouseHandler, mouseWheelHandler);
         manager.init();
     }
     
@@ -89,7 +94,6 @@ public class Board extends Canvas implements Runnable
 		}
 		if(manager.getInventoryManager().onInventoryScreen()){
 			if(backgroundDo){
-				pic2D.setColor(Color.WHITE);
 				pic2D.fillRect(0, 0, 480, 374);
 				pic2D.drawImage(manager.getCamera().getMapImage(), manager.getCamera().getX(), manager.getCamera().getY(), this);
 				pic2D.drawImage(manager.getPlayer().getImage(), manager.getPlayer().getX(), manager.getPlayer().getY(), this);
@@ -133,7 +137,7 @@ public class Board extends Canvas implements Runnable
 			render();
 			if(System.currentTimeMillis() - lastTimer >= 1000){
 				lastTimer += 1000;
-				System.out.println("Frames: " + frames + " Ticks: " + ticks);
+				//System.out.println("Frames: " + frames + " Ticks: " + ticks);
 				frames = 0;
 				ticks = 0;
 			}
