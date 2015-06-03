@@ -1,7 +1,10 @@
 package dev.thenamegenerator.MasterQuestAlpha.display;
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 
 import dev.thenamegenerator.MasterQuestAlpha.gfx.Assets;
 import dev.thenamegenerator.MasterQuestAlpha.input.InputHandler;
@@ -18,6 +21,11 @@ public class Board extends Canvas implements Runnable
     private GameManager manager;
     
     Graphics g2d;
+    
+    Graphics2D pic2D;
+    private BufferedImage background = new BufferedImage(480,374, BufferedImage.TYPE_USHORT_GRAY);
+    boolean backgroundDo = true;
+    
     public Thread thread;
 
     private int width = 480;
@@ -29,6 +37,7 @@ public class Board extends Canvas implements Runnable
     private int ticks = 0;
 
     public Board(){
+    	pic2D = background.createGraphics();
     	setFocusable(true);
     	input = new InputHandler(this);
     	mouseHandler = new MouseHandler(this);
@@ -71,11 +80,24 @@ public class Board extends Canvas implements Runnable
 		//CLEARS SCREEN
 		g.clearRect(0, 0, width, height);
 		//RENDER HERE
-		g.drawImage(manager.getCamera().getMapImage(), manager.getCamera().getX(), manager.getCamera().getY(), this);
-		g.drawImage(manager.getPlayer().getImage(), manager.getPlayer().getX(), manager.getPlayer().getY(), this);
-		g.drawImage(manager.getChicken().getImage(), manager.getChicken().getX(),manager.getChicken().getY(), this);			
-		g.drawImage(manager.getElephant().getImage(), manager.getElephant().getX(), manager.getElephant().getY(), this);
+		if(!manager.getInventoryManager().onInventoryScreen()){
+			g.drawImage(manager.getCamera().getMapImage(), manager.getCamera().getX(), manager.getCamera().getY(), this);
+			g.drawImage(manager.getPlayer().getImage(), manager.getPlayer().getX(), manager.getPlayer().getY(), this);
+			g.drawImage(manager.getChicken().getImage(), manager.getChicken().getX(),manager.getChicken().getY(), this);			
+			g.drawImage(manager.getElephant().getImage(), manager.getElephant().getX(), manager.getElephant().getY(), this);
+			backgroundDo = true;
+		}
 		if(manager.getInventoryManager().onInventoryScreen()){
+			if(backgroundDo){
+				pic2D.setColor(Color.WHITE);
+				pic2D.fillRect(0, 0, 480, 374);
+				pic2D.drawImage(manager.getCamera().getMapImage(), manager.getCamera().getX(), manager.getCamera().getY(), this);
+				pic2D.drawImage(manager.getPlayer().getImage(), manager.getPlayer().getX(), manager.getPlayer().getY(), this);
+				pic2D.drawImage(manager.getChicken().getImage(), manager.getChicken().getX(),manager.getChicken().getY(), this);			
+				pic2D.drawImage(manager.getElephant().getImage(), manager.getElephant().getX(), manager.getElephant().getY(), this);
+				backgroundDo = false;
+			}
+			g.drawImage(background, 0, 0, this);
 			g.drawImage(manager.getInventoryManager().getInventory().getImage(), 32, 32, this);
 			g.drawImage(manager.getInventoryManager().getInventoryScrollScreen().listOfItems, 128, 91, this);
 		}
