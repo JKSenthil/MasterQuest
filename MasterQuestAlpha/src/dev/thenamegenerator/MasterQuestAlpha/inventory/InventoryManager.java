@@ -27,6 +27,11 @@ public class InventoryManager {
 		
 		addItem(new Banana());
 		addItem(new Carrot());
+		addItem(new Banana());
+		addItem(new Carrot());
+		addItem(new Banana());
+		addItem(new Carrot());
+		addItem(new Carrot());
 		
 		addItem(new IronShortSword());
 		
@@ -72,8 +77,8 @@ public class InventoryManager {
 				scrollScreen.resetScrollOffset();
 				inventory.changeScreen = false;
 			}
-			scrollScreen.reset();
 			scrollScreen.tick();
+			scrollScreen.reset();
 			if(inventory.inWeapons){
 				for(int i = 0; i<playerWeapons.size(); i++){
 					scrollScreen.addItem(playerWeapons.get(i));

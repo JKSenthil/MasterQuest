@@ -36,14 +36,16 @@ public class InventoryScrollScreen {
 	}
 	
 	public void tick(){
-		if(mouseWheelHandler.wheel.noches < 0){
-			scrollOffset += 5;
-			mouseWheelHandler.wheel.noches = 0;
-			change = true;
-		}else if(mouseWheelHandler.wheel.noches > 0){
-			scrollOffset += -5;
-			mouseWheelHandler.wheel.noches = 0;
-			change = true;
+		if(reference > (6*32)){
+			if(mouseWheelHandler.wheel.noches < 0){
+				scrollOffset += 8;
+				mouseWheelHandler.wheel.noches = 0;
+				change = true;
+			}else if(mouseWheelHandler.wheel.noches > 0){
+				scrollOffset += -8;
+				mouseWheelHandler.wheel.noches = 0;
+				change = true;
+			}
 		}
 	}
 	
