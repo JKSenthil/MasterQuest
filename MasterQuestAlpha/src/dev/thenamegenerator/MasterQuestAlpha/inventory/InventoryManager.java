@@ -74,29 +74,26 @@ public class InventoryManager {
 			}
 			scrollScreen.reset();
 			scrollScreen.tick();
-			if(scrollScreen.isChange()){
-				if(inventory.inWeapons){
-					for(int i = 0; i<playerWeapons.size(); i++){
-						scrollScreen.addItem(playerWeapons.get(i));
-					}				
-				}else if(inventory.inArmor){
-					for(int i = 0; i<playerArmor.size(); i++){
-						scrollScreen.addItem(playerArmor.get(i));
-					}
-				}else if(inventory.inPotion){
-					for(int i = 0; i<playerPotion.size(); i++){
-						scrollScreen.addItem(playerPotion.get(i));
-					}
-				}else if(inventory.inMagic){
-					for(int i = 0; i<playerMagic.size(); i++){
-						scrollScreen.addItem(playerMagic.get(i));
-					}
-				}else if(inventory.inMisc){
-					for(int i = 0; i<playerMisc.size(); i++){
-						scrollScreen.addItem(playerMisc.get(i));
-					}
+			if(inventory.inWeapons){
+				for(int i = 0; i<playerWeapons.size(); i++){
+					scrollScreen.addItem(playerWeapons.get(i));
+				}				
+			}else if(inventory.inArmor){
+				for(int i = 0; i<playerArmor.size(); i++){
+					scrollScreen.addItem(playerArmor.get(i));
 				}
-				scrollScreen.setChange(false);
+			}else if(inventory.inPotion){
+				for(int i = 0; i<playerPotion.size(); i++){
+					scrollScreen.addItem(playerPotion.get(i));
+				}
+			}else if(inventory.inMagic){
+				for(int i = 0; i<playerMagic.size(); i++){
+					scrollScreen.addItem(playerMagic.get(i));
+				}
+			}else if(inventory.inMisc){
+				for(int i = 0; i<playerMisc.size(); i++){
+					scrollScreen.addItem(playerMisc.get(i));
+				}
 			}
 		}
 	}	
