@@ -12,8 +12,6 @@ public class InventoryManager {
 	private Inventory inventory;
 	private InventoryScrollScreen scrollScreen;
 	
-	//TEST
-	private MouseWheelHandler mouseWheelHandler;
 	
 	ArrayList<Item> playerWeapons = new ArrayList<Item>();
 	ArrayList<Item> playerArmor = new ArrayList<Item>();
@@ -22,17 +20,14 @@ public class InventoryManager {
 	ArrayList<Item> playerMisc = new ArrayList<Item>();
 	
 	private boolean onInventoryScreen = false;
-	private boolean cont = true;
 	
-	public InventoryManager(InputHandler input, MouseHandler mouseHandler, MouseWheelHandler mouseWheelHandler){
-		//test
-		this.mouseWheelHandler = mouseWheelHandler;
-		
+	public InventoryManager(InputHandler input, MouseHandler mouseHandler, MouseWheelHandler mouseWheelHandler){	
 		inventory = new Inventory(input, mouseHandler);
-		scrollScreen = new InventoryScrollScreen(mouseHandler);
+		scrollScreen = new InventoryScrollScreen(mouseHandler, mouseWheelHandler);
 		
 		addItem(new Banana());
 		addItem(new Carrot());
+		
 		addItem(new IronShortSword());
 		
 	}
@@ -73,60 +68,35 @@ public class InventoryManager {
 			onInventoryScreen = false;
 		}
 		if(onInventoryScreen){
-			if(mouseWheelHandler.wheel.noches > 0){
-				System.out.println("Mouse Wheel Scolls Down");
-				System.out.println(mouseWheelHandler.wheel.noches);
-				mouseWheelHandler.wheel.noches = 0;
-			}else if(mouseWheelHandler.wheel.noches < 0){
-				System.out.println("Mouse Wheel Scolls Up");
-				System.out.println(mouseWheelHandler.wheel.noches);
-				mouseWheelHandler.wheel.noches = 0;
-			}	
-			if(inventory.inWeapons){
-				scrollScreen.reset();
-				cont = true;
-				if(cont){
+			if(inventory.changeScreen){
+				scrollScreen.resetScrollOffset();
+				inventory.changeScreen = false;
+			}
+			scrollScreen.reset();
+			scrollScreen.tick();
+			if(scrollScreen.isChange()){
+				if(inventory.inWeapons){
 					for(int i = 0; i<playerWeapons.size(); i++){
 						scrollScreen.addItem(playerWeapons.get(i));
-					}
-					cont = false;
-				}
-			}else if(inventory.inArmor){
-				scrollScreen.reset();
-				cont = true;
-				if(cont){
+					}				
+				}else if(inventory.inArmor){
 					for(int i = 0; i<playerArmor.size(); i++){
 						scrollScreen.addItem(playerArmor.get(i));
 					}
-					cont = false;
-				}
-			}else if(inventory.inPotion){
-				scrollScreen.reset();
-				cont = true;
-				if(cont){
+				}else if(inventory.inPotion){
 					for(int i = 0; i<playerPotion.size(); i++){
 						scrollScreen.addItem(playerPotion.get(i));
 					}
-					cont = false;
-				}
-			}else if(inventory.inMagic){
-				scrollScreen.reset();
-				cont = true;
-				if(cont){
+				}else if(inventory.inMagic){
 					for(int i = 0; i<playerMagic.size(); i++){
 						scrollScreen.addItem(playerMagic.get(i));
 					}
-					cont = false;
-				}
-			}else if(inventory.inMisc){
-				scrollScreen.reset();
-				cont = true;
-				if(cont){
+				}else if(inventory.inMisc){
 					for(int i = 0; i<playerMisc.size(); i++){
 						scrollScreen.addItem(playerMisc.get(i));
 					}
-					cont = false;
 				}
+				scrollScreen.setChange(false);
 			}
 		}
 	}	

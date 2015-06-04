@@ -137,7 +137,7 @@ public class Board extends Canvas implements Runnable
 			render();
 			if(System.currentTimeMillis() - lastTimer >= 1000){
 				lastTimer += 1000;
-				//System.out.println("Frames: " + frames + " Ticks: " + ticks);
+				System.out.println("Frames: " + frames + " Ticks: " + ticks);
 				frames = 0;
 				ticks = 0;
 			}

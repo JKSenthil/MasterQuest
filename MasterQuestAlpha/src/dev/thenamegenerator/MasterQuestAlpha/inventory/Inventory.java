@@ -17,6 +17,8 @@ public class Inventory {
 	
 	public boolean inStats, inMap, inWeapons, inArmor, inPotion, inMagic, inMisc;
 	
+	public boolean changeScreen = false;
+	
 	public Inventory(InputHandler input, MouseHandler mouseHandler){
 		inven = Assets.inventory;
 		this.input = input;
@@ -60,24 +62,31 @@ public class Inventory {
 					if(mouseHandler.mouse.y >= (19+32) && mouseHandler.mouse.y <= (46+32)){
 						reset();
 						inStats = true;
+						changeScreen = true;
 					}else if(mouseHandler.mouse.y >= (53+32) && mouseHandler.mouse.y <= (80+32)){
 						reset();
 						inMap = true;
+						changeScreen = true;
 					}else if(mouseHandler.mouse.y >= (88+32) && mouseHandler.mouse.y <= (115+32)){
 						reset();
 						inWeapons = true;
+						changeScreen = true;
 					}else if(mouseHandler.mouse.y >= (122+32) && mouseHandler.mouse.y <= (149+32)){
 						reset();
 						inArmor = true;
+						changeScreen = true;
 					}else if(mouseHandler.mouse.y >= (156+32) && mouseHandler.mouse.y <= (183+32)){
 						reset();
 						inPotion = true;
+						changeScreen = true;
 					}else if(mouseHandler.mouse.y >= (190+32) && mouseHandler.mouse.y <= (217+32)){
 						reset();
 						inMagic = true;
+						changeScreen = true;
 					}else if(mouseHandler.mouse.y >= (224+32) && mouseHandler.mouse.y <= (251+32)){
 						reset();
 						inMisc = true;
+						changeScreen = true;
 					}
 					mouseHandler.mouse.toggle(false);
 				}
