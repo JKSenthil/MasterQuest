@@ -19,11 +19,14 @@ public class InventoryScrollScreen {
 	
 	public int reference = 0;
 	public int scrollOffset = 0;
+	public int count = 0;
+	public int itemNumber = 0;
 	
 	public MouseHandler mouseHandler;
 	public MouseWheelHandler mouseWheelHandler;
 	
 	private boolean change = true;
+	private boolean isSelected = false;
 	
 	public InventoryScrollScreen(MouseHandler mouseHandler, MouseWheelHandler mouseWheelHandler){
 		listOfItems = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -47,6 +50,21 @@ public class InventoryScrollScreen {
 				change = true;
 			}
 		}
+		if(mouseHandler.mouse.isPressed()){
+			if(mouseHandler.mouse.x >= 128 && mouseHandler.mouse.x <= 328){
+				int stand = 0;
+				for(int i = 0; i<(reference/32); i++){
+					if(mouseHandler.mouse.y > (stand+91) && mouseHandler.mouse.y < (stand+91+32)){
+						itemNumber = (stand/32);
+						System.out.println(itemNumber);
+						System.out.println("WIKA");
+						isSelected = true;
+						break;
+					}
+					stand+=32;
+				}
+			}
+		}
 	}
 	
 	public boolean isChange(){
@@ -58,11 +76,18 @@ public class InventoryScrollScreen {
 	}
 	
 	public void addItem(Item item){
+			if(isSelected){
+				if(itemNumber == count){
+					g2d.setColor(Color.ORANGE);
+					g2d.fillRect(0, (itemNumber*32) + scrollOffset, width, (itemNumber*32) + scrollOffset);
+				}
+			}
 			g2d.drawImage(item.getIcon(), 0, reference + scrollOffset, null);
 			reference+=32;
 			g2d.setColor(Color.BLACK);
 			g2d.drawString(item.getName(), 40, reference - 11 + scrollOffset);
 			g2d.drawLine(0, reference + scrollOffset, width, reference + scrollOffset);
+			count++;
 	}
 	
 	public BufferedImage getScrollScreen(){
@@ -73,6 +98,7 @@ public class InventoryScrollScreen {
 		g2d.setColor(Color.white);
 		g2d.fillRect(0, 0, width, height);
 		reference = 0;
+		count = 0;
 	}
 	
 	public void resetScrollOffset(){
