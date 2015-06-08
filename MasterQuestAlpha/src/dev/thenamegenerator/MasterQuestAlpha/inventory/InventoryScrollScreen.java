@@ -54,10 +54,9 @@ public class InventoryScrollScreen {
 			if(mouseHandler.mouse.x >= 128 && mouseHandler.mouse.x <= 328){
 				int stand = 0;
 				for(int i = 0; i<(reference/32); i++){
-					if(mouseHandler.mouse.y > (stand+91) && mouseHandler.mouse.y < (stand+91+32)){
-						itemNumber = (stand/32);
+					if(mouseHandler.mouse.y > (stand+91+scrollOffset) && mouseHandler.mouse.y < (stand+91+32+scrollOffset)){
+						itemNumber = (stand/32)+1;
 						System.out.println(itemNumber);
-						System.out.println("WIKA");
 						isSelected = true;
 						break;
 					}
@@ -79,7 +78,7 @@ public class InventoryScrollScreen {
 			if(isSelected){
 				if(itemNumber == count){
 					g2d.setColor(Color.ORANGE);
-					g2d.fillRect(0, (itemNumber*32) + scrollOffset, width, (itemNumber*32) + scrollOffset);
+					g2d.fillRect(scrollOffset, ((itemNumber-1)*32) + scrollOffset, width, ((itemNumber-1)*32) + scrollOffset + 32);
 				}
 			}
 			g2d.drawImage(item.getIcon(), 0, reference + scrollOffset, null);
