@@ -21,6 +21,7 @@ public class Inventory {
 	
 	public Inventory(InputHandler input, MouseHandler mouseHandler){
 		inven = Assets.inventory;
+		
 		this.input = input;
 		this.mouseHandler = mouseHandler;
 		
@@ -90,6 +91,8 @@ public class Inventory {
 					}
 					mouseHandler.mouse.toggle(false);
 				}
+			}else{
+				changeScreen = false;
 			}
 		}
 	}

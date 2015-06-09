@@ -9,6 +9,7 @@ public class MouseWheelHandler implements MouseWheelListener{
 	
 	public class Wheel{
 		public int noches; 
+		public boolean notchMoved;
 	}
 	
 	public MouseWheelHandler(Board board){
@@ -19,6 +20,7 @@ public class MouseWheelHandler implements MouseWheelListener{
 
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		wheel.noches = e.getWheelRotation();
+		wheel.notchMoved = true;
 	}
 	
 }

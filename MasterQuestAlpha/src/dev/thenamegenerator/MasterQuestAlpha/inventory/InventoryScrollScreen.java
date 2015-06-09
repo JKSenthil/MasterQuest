@@ -26,7 +26,7 @@ public class InventoryScrollScreen {
 	public MouseWheelHandler mouseWheelHandler;
 	
 	private boolean change = true;
-	private boolean isSelected = false;
+	public boolean isSelected = false;
 	
 	public InventoryScrollScreen(MouseHandler mouseHandler, MouseWheelHandler mouseWheelHandler){
 		listOfItems = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -39,16 +39,31 @@ public class InventoryScrollScreen {
 	}
 	
 	public void tick(){
-		if(reference > (6*32)){
-			if(mouseWheelHandler.wheel.noches < 0){
-				scrollOffset += 8;
-				mouseWheelHandler.wheel.noches = 0;
-				change = true;
-			}else if(mouseWheelHandler.wheel.noches > 0){
-				scrollOffset += -8;
-				mouseWheelHandler.wheel.noches = 0;
-				change = true;
+		if(mouseWheelHandler.wheel.notchMoved){
+			if(reference > (6*32)){
+				if(mouseWheelHandler.wheel.noches < 0){
+					if(scrollOffset <= 0){
+						if(scrollOffset == 0){
+							
+						}else{
+							scrollOffset += 8;
+							mouseWheelHandler.wheel.noches = 0;
+							change = true;
+						}
+					}
+				}else if(mouseWheelHandler.wheel.noches > 0){
+					if((-1*scrollOffset) <= reference - (6*32)){
+						if((-1*scrollOffset) == reference - (6*32)){
+							
+						}else{
+							scrollOffset += -8;
+							mouseWheelHandler.wheel.noches = 0;
+							change = true;
+						}
+					}
+				}
 			}
+			mouseWheelHandler.wheel.notchMoved = false;
 		}
 		if(mouseHandler.mouse.isPressed()){
 			if(mouseHandler.mouse.x >= 128 && mouseHandler.mouse.x <= 328){
@@ -56,12 +71,13 @@ public class InventoryScrollScreen {
 				for(int i = 0; i<(reference/32); i++){
 					if(mouseHandler.mouse.y > (stand+91+scrollOffset) && mouseHandler.mouse.y < (stand+91+32+scrollOffset)){
 						itemNumber = (stand/32)+1;
-						System.out.println(itemNumber);
 						isSelected = true;
 						break;
 					}
 					stand+=32;
 				}
+			}else{
+				isSelected = false;
 			}
 		}
 	}
@@ -75,18 +91,19 @@ public class InventoryScrollScreen {
 	}
 	
 	public void addItem(Item item){
-			if(isSelected){
-				if(itemNumber == count){
-					g2d.setColor(Color.ORANGE);
-					g2d.fillRect(scrollOffset, ((itemNumber-1)*32) + scrollOffset, width, ((itemNumber-1)*32) + scrollOffset + 32);
-				}
-			}
 			g2d.drawImage(item.getIcon(), 0, reference + scrollOffset, null);
 			reference+=32;
 			g2d.setColor(Color.BLACK);
 			g2d.drawString(item.getName(), 40, reference - 11 + scrollOffset);
 			g2d.drawLine(0, reference + scrollOffset, width, reference + scrollOffset);
 			count++;
+	}
+	
+	public void selectedItem(){
+		if(isSelected){
+			g2d.setColor(Color.ORANGE);
+			g2d.fillRect(0, ((itemNumber-1)*32) + scrollOffset, width, 32);
+		}
 	}
 	
 	public BufferedImage getScrollScreen(){

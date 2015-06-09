@@ -75,10 +75,16 @@ public class InventoryManager {
 		if(onInventoryScreen){
 			if(inventory.changeScreen){
 				scrollScreen.resetScrollOffset();
+				scrollScreen.tick();
+				scrollScreen.reset();
+				
 				inventory.changeScreen = false;
+				scrollScreen.isSelected = false;
+			}else{
+				scrollScreen.tick();
+				scrollScreen.reset();
+				scrollScreen.selectedItem();
 			}
-			scrollScreen.tick();
-			scrollScreen.reset();
 			if(inventory.inWeapons){
 				for(int i = 0; i<playerWeapons.size(); i++){
 					scrollScreen.addItem(playerWeapons.get(i));
