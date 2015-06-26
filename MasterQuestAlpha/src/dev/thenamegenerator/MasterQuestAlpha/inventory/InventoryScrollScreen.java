@@ -1,6 +1,7 @@
 package dev.thenamegenerator.MasterQuestAlpha.inventory;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -18,15 +19,21 @@ public class InventoryScrollScreen {
 	public int height = 6*32;
 	
 	public int reference = 0;
+	public int reference2 = 0;
 	public int scrollOffset = 0;
 	public int count = 0;
 	public int itemNumber = 0;
+	
+	public int count2 = 0;
 	
 	public MouseHandler mouseHandler;
 	public MouseWheelHandler mouseWheelHandler;
 	
 	private boolean change = true;
 	public boolean isSelected = false;
+	
+	private Font fontNormal;
+	private Font fontSmall;
 	
 	public InventoryScrollScreen(MouseHandler mouseHandler, MouseWheelHandler mouseWheelHandler){
 		listOfItems = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -36,30 +43,26 @@ public class InventoryScrollScreen {
 		
 		this.mouseHandler = mouseHandler;
 		this.mouseWheelHandler = mouseWheelHandler;
+		
+		fontNormal = new Font("Verdana", Font.PLAIN, 14);
+		fontSmall = new Font("Verdana", Font.PLAIN, 10);
+		g2d.setFont(fontNormal);
 	}
 	
 	public void tick(){
 		if(mouseWheelHandler.wheel.notchMoved){
 			if(reference > (6*32)){
 				if(mouseWheelHandler.wheel.noches < 0){
-					if(scrollOffset <= 0){
-						if(scrollOffset == 0){
-							
-						}else{
-							scrollOffset += 8;
-							mouseWheelHandler.wheel.noches = 0;
-							change = true;
-						}
+					if(scrollOffset < 0){
+						scrollOffset += 8;
+						mouseWheelHandler.wheel.noches = 0;
+						change = true;
 					}
 				}else if(mouseWheelHandler.wheel.noches > 0){
-					if((-1*scrollOffset) <= reference - (6*32)){
-						if((-1*scrollOffset) == reference - (6*32)){
-							
-						}else{
-							scrollOffset += -8;
-							mouseWheelHandler.wheel.noches = 0;
-							change = true;
-						}
+					if((-1*scrollOffset) < reference - (6*32)){
+						scrollOffset += -8;
+						mouseWheelHandler.wheel.noches = 0;
+						change = true;
 					}
 				}
 			}
@@ -91,12 +94,28 @@ public class InventoryScrollScreen {
 	}
 	
 	public void addItem(Item item){
-			g2d.drawImage(item.getIcon(), 0, reference + scrollOffset, null);
-			reference+=32;
-			g2d.setColor(Color.BLACK);
-			g2d.drawString(item.getName(), 40, reference - 11 + scrollOffset);
-			g2d.drawLine(0, reference + scrollOffset, width, reference + scrollOffset);
-			count++;
+		g2d.drawImage(item.getIcon(), 0, reference + scrollOffset, null);
+		reference+=32;
+		g2d.setFont(fontNormal);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(item.getName(), 50, reference - 11 + scrollOffset);
+		g2d.setFont(fontSmall);
+		g2d.drawString("x1", 27, reference - 2 + scrollOffset);
+		g2d.drawLine(0, reference + scrollOffset, width, reference + scrollOffset);
+		
+		g2d.setFont(fontNormal);
+		count++;
+	}
+	
+	public void stackItem(Item item, int count){
+		g2d.drawImage(item.getIcon(), 0, reference + scrollOffset, null);
+		reference += 32;
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(item.getName(), 50, reference - 11 + scrollOffset);
+		g2d.setFont(fontSmall);
+		g2d.drawString("x"+count, 27, reference - 2 + scrollOffset);
+		g2d.drawLine(0, reference + scrollOffset, width, reference + scrollOffset);
+		g2d.setFont(fontNormal);
 	}
 	
 	public void selectedItem(){
@@ -115,6 +134,8 @@ public class InventoryScrollScreen {
 		g2d.fillRect(0, 0, width, height);
 		reference = 0;
 		count = 0;
+		
+		reference2 = 0;
 	}
 	
 	public void resetScrollOffset(){

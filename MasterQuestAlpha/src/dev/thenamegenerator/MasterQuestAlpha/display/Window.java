@@ -28,5 +28,4 @@ public class Window extends JFrame{
         new Window();
         board.start();
     }
-
 }

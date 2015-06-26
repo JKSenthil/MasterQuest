@@ -11,16 +11,22 @@ public class Assets
    //entity images
    public static BufferedImage CL, CR, CD, CU;
    public static BufferedImage ER, EL;
+   public static BufferedImage spider;
    
    //food icon images
    public static BufferedImage carrot;
    public static BufferedImage banana;
+   public static BufferedImage watermelon;
+   public static BufferedImage chicken;
+   public static BufferedImage apple;
+   public static BufferedImage fish;
+   public static BufferedImage bread;
    
    //weapon icon images
    public static BufferedImage ironShortSword;
    
    public static void init(){
-	   SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("tile/TileSheet.png"));
+	   SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("tile/TileSheetg.png"));
 	   grass = sheet.crop(0, 0, 32, 32);
 	   water = sheet.crop(32, 0, 32, 32);
 	   path = sheet.crop(0, 32, 32, 32);
@@ -49,8 +55,15 @@ public class Assets
 	   
 	   carrot = ImageLoader.loadImage("food/Carrot.png");
 	   banana = ImageLoader.loadImage("food/Banana.png");
+	   watermelon = ImageLoader.loadImage("food/Watermelon.png");
+	   chicken = ImageLoader.loadImage("food/chicken.png");
+	   apple = ImageLoader.loadImage("food/Apple.png");
+	   fish = ImageLoader.loadImage("food/Fish.png");
+	   bread = ImageLoader.loadImage("food/Bread.png");
 	   
 	   ironShortSword = ImageLoader.loadImage("weapons/Iron Shortsword.png");
+	   
+	   spider = ImageLoader.loadImage("mobs/spider.png");
    }
    
 }

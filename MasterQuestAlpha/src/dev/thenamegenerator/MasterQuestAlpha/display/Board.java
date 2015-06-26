@@ -90,6 +90,7 @@ public class Board extends Canvas implements Runnable
 			g.drawImage(manager.getPlayer().getImage(), manager.getPlayer().getX(), manager.getPlayer().getY(), this);
 			g.drawImage(manager.getChicken().getImage(), manager.getChicken().getX(),manager.getChicken().getY(), this);			
 			g.drawImage(manager.getElephant().getImage(), manager.getElephant().getX(), manager.getElephant().getY(), this);
+			g.drawImage(manager.getSpider().getImage(), manager.getSpider().getX(), manager.getSpider().getY(), this);
 			backgroundDo = true;
 		}
 		if(manager.getInventoryManager().onInventoryScreen()){
@@ -99,11 +100,12 @@ public class Board extends Canvas implements Runnable
 				pic2D.drawImage(manager.getPlayer().getImage(), manager.getPlayer().getX(), manager.getPlayer().getY(), this);
 				pic2D.drawImage(manager.getChicken().getImage(), manager.getChicken().getX(),manager.getChicken().getY(), this);			
 				pic2D.drawImage(manager.getElephant().getImage(), manager.getElephant().getX(), manager.getElephant().getY(), this);
+				pic2D.drawImage(manager.getSpider().getImage(), manager.getSpider().getX(), manager.getSpider().getY(), this);
 				backgroundDo = false;
 			}
 			g.drawImage(background, 0, 0, this);
 			g.drawImage(manager.getInventoryManager().getInventory().getImage(), 32, 32, this);
-			g.drawImage(manager.getInventoryManager().getInventoryScrollScreen().listOfItems, 128, 91, this);
+			g.drawImage(manager.getInventoryManager().getInventoryScrollScreen().getScrollScreen(), 128, 91, this);
 		}
 		//END RENDER
 		g.dispose();
