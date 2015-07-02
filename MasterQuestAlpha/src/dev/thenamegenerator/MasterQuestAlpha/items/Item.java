@@ -10,6 +10,8 @@ public class Item {
 	protected double weight;
 	protected int value;
 	
+	protected String description;
+	
 	protected BufferedImage icon;
 	
 	public int getId(){
@@ -34,5 +36,9 @@ public class Item {
 	
 	public String getType(){
 		return type;
+	}
+	
+	public String getDescription(){
+		return description;
 	}
 }

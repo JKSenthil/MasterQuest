@@ -105,7 +105,10 @@ public class Board extends Canvas implements Runnable
 			}
 			g.drawImage(background, 0, 0, this);
 			g.drawImage(manager.getInventoryManager().getInventory().getImage(), 32, 32, this);
-			g.drawImage(manager.getInventoryManager().getInventoryScrollScreen().getScrollScreen(), 128, 91, this);
+			g.drawImage(manager.getInventoryManager().getInventoryScrollScreen().getScrollScreen(), 128, 83, this); //Original at 91
+			if(manager.getInventoryManager().getItemSelected()){
+				g.drawString(manager.getInventoryManager().getDescription(), 332, 260);
+			}
 		}
 		//END RENDER
 		g.dispose();

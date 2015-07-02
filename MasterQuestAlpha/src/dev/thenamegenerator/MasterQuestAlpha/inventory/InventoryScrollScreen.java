@@ -16,7 +16,7 @@ public class InventoryScrollScreen {
 	Graphics g2d;
 	
 	public int width = 200;
-	public int height = 6*32;
+	public int height = 7*32;
 	
 	public int reference = 0;
 	public int reference2 = 0;
@@ -51,7 +51,7 @@ public class InventoryScrollScreen {
 	
 	public void tick(){
 		if(mouseWheelHandler.wheel.notchMoved){
-			if(reference > (6*32)){
+			if(reference > (height)){
 				if(mouseWheelHandler.wheel.noches < 0){
 					if(scrollOffset < 0){
 						scrollOffset += 8;
@@ -59,7 +59,7 @@ public class InventoryScrollScreen {
 						change = true;
 					}
 				}else if(mouseWheelHandler.wheel.noches > 0){
-					if((-1*scrollOffset) < reference - (6*32)){
+					if((-1*scrollOffset) < reference - (height)){
 						scrollOffset += -8;
 						mouseWheelHandler.wheel.noches = 0;
 						change = true;
@@ -72,7 +72,7 @@ public class InventoryScrollScreen {
 			if(mouseHandler.mouse.x >= 128 && mouseHandler.mouse.x <= 328){
 				int stand = 0;
 				for(int i = 0; i<(reference/32); i++){
-					if(mouseHandler.mouse.y > (stand+91+scrollOffset) && mouseHandler.mouse.y < (stand+91+32+scrollOffset)){
+					if(mouseHandler.mouse.y > (stand+83+scrollOffset) && mouseHandler.mouse.y < (stand+83+32+scrollOffset)){
 						itemNumber = (stand/32)+1;
 						isSelected = true;
 						break;
@@ -91,6 +91,10 @@ public class InventoryScrollScreen {
 	
 	public void setChange(boolean change){
 		this.change = change;
+	}
+	
+	public int getItemNumber(){
+		return itemNumber;
 	}
 	
 	public void addItem(Item item){
@@ -123,6 +127,10 @@ public class InventoryScrollScreen {
 			g2d.setColor(Color.ORANGE);
 			g2d.fillRect(0, ((itemNumber-1)*32) + scrollOffset, width, 32);
 		}
+	}
+	
+	public boolean itemSelected(){
+		return isSelected;
 	}
 	
 	public BufferedImage getScrollScreen(){

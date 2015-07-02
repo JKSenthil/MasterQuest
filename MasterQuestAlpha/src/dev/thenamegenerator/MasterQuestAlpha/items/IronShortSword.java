@@ -9,5 +9,6 @@ public class IronShortSword extends Weapon{
 		weight = 10;
 		value = 20;
 		icon = Assets.ironShortSword;
+		description = "It's a good shortsword";
 	}
 }

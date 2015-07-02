@@ -10,6 +10,7 @@ public class Bread extends Food{
 		weight = 5;
 		value = 10;
 		icon = Assets.bread;
+		description = "It's bread";
 	}
 	
 }

@@ -17,12 +17,16 @@ public class InventoryManager{
 	
 	private boolean endLoop = false;
 	
+	public boolean itemSelected = false;
+	public String description = "";
 	
 	ArrayList<Item> playerWeapons = new ArrayList<Item>();
 	ArrayList<Item> playerArmor = new ArrayList<Item>();
 	ArrayList<Item> playerPotion = new ArrayList<Item>();
 	ArrayList<Item> playerMagic = new ArrayList<Item>();
 	ArrayList<Item> playerMisc = new ArrayList<Item>();
+	
+	ArrayList<Item> playerTypeMisc = new ArrayList<Item>();
 	
 	private boolean onInventoryScreen = false;
 	
@@ -56,6 +60,16 @@ public class InventoryManager{
 		addItem(new Bread());
 		addItem(new Bread());
 		addItem(new Bread());
+		
+		addItem(new MisfortuneEhsu());
+	}
+	
+	public boolean getItemSelected(){
+		return itemSelected;
+	}
+	
+	public String getDescription(){
+		return description;
 	}
 	
 	public ArrayList<Item> getPlayerItems(){
@@ -83,6 +97,8 @@ public class InventoryManager{
 			playerArmor.add(item);
 		}else if(item.getType().equalsIgnoreCase("potion")){
 			playerPotion.add(item);
+		}else if(item.getType().equalsIgnoreCase("book")){
+			playerMisc.add(item);
 		}
 	}
 	
@@ -104,6 +120,19 @@ public class InventoryManager{
 			}
 		}
 		
+		for(int i = 0; i < playerMisc.size(); i++){
+			Item tempItem = playerMisc.get(i);
+			if(i != 0){
+				Item tempItem2 = playerMisc.get(i - 1);
+				if(tempItem2.getId() != tempItem.getId()){
+					playerTypeMisc.add(tempItem2);
+				}
+			}
+			if(i == 0){
+				playerTypeMisc.add(playerMisc.get(0));
+			}
+		}
+		playerTypeMisc.add(playerMisc.get(playerMisc.size()-1));
 	}
 	
 	public void tick(){
@@ -134,6 +163,12 @@ public class InventoryManager{
 				for(int i = 0; i<playerWeapons.size(); i++){
 					scrollScreen.addItem(playerWeapons.get(i));
 				}				
+				if(scrollScreen.itemSelected()){
+					itemSelected = true;
+					description = playerWeapons.get(scrollScreen.getItemNumber() - 1).getDescription();
+				}else{
+					itemSelected = false;
+				}
 			}else if(inventory.inArmor){
 				for(int i = 0; i<playerArmor.size(); i++){
 					scrollScreen.addItem(playerArmor.get(i));
@@ -180,6 +215,12 @@ public class InventoryManager{
 					if(index >= playerMisc.size()){
 						endLoop = true;
 					}
+				}
+				if(scrollScreen.itemSelected()){
+					itemSelected = true;
+					description = playerTypeMisc.get(scrollScreen.getItemNumber()).getDescription();
+				}else{
+					itemSelected = false;
 				}
 			}
 		}

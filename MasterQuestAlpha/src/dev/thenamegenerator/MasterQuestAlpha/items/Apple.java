@@ -10,6 +10,7 @@ public class Apple extends Food{
 		weight = 2;
 		value = 7;
 		icon = Assets.apple;
+		description = "It's an apple";
 	}
 	
 }

@@ -10,6 +10,7 @@ public class Watermelon extends Food{
 		weight = 2.5;
 		value = 5;
 		icon = Assets.watermelon;
+		description = "It's a watermelon";
 	}
 	
 }

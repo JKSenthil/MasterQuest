@@ -22,6 +22,9 @@ public class Assets
    public static BufferedImage fish;
    public static BufferedImage bread;
    
+   //other stuff
+   public static BufferedImage bookIcon;
+   
    //weapon icon images
    public static BufferedImage ironShortSword;
    
@@ -60,6 +63,8 @@ public class Assets
 	   apple = ImageLoader.loadImage("food/Apple.png");
 	   fish = ImageLoader.loadImage("food/Fish.png");
 	   bread = ImageLoader.loadImage("food/Bread.png");
+	   
+	   bookIcon = ImageLoader.loadImage("Book.png");
 	   
 	   ironShortSword = ImageLoader.loadImage("weapons/Iron Shortsword.png");
 	   

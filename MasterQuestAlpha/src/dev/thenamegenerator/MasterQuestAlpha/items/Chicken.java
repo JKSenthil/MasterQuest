@@ -10,6 +10,7 @@ public class Chicken extends Food{
 		weight = 2;
 		value = 7;
 		icon = Assets.chicken;
+		description = "It's a chicken";
 	}
 	
 }

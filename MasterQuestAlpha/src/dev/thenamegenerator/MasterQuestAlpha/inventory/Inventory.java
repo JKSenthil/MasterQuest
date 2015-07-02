@@ -11,13 +11,11 @@ public class Inventory {
 	private InputHandler input;
 	private MouseHandler mouseHandler;
 	
-	BufferedImage inven;
-	
 	public boolean renderInventory = false;
-	
 	public boolean inStats, inMap, inWeapons, inArmor, inPotion, inMagic, inMisc;
-	
 	public boolean changeScreen = false;
+	
+	BufferedImage inven;
 	
 	public Inventory(InputHandler input, MouseHandler mouseHandler){
 		inven = Assets.inventory;

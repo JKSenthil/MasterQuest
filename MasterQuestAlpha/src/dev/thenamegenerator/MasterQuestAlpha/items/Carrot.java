@@ -10,6 +10,7 @@ public class Carrot extends Food{
 		weight = 2.0;
 		value = 5;
 		icon = Assets.carrot;
+		description = "It's a carrot";
 	}
 	
 }
