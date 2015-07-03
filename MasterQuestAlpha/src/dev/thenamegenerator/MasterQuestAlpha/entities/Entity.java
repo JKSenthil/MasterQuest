@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import dev.thenamegenerator.MasterQuestAlpha.collision.Collision;
-import dev.thenamegenerator.MasterQuestAlpha.world.World;
 
 public class Entity{
 	
@@ -78,22 +77,22 @@ public class Entity{
 				temp = rand.nextInt(4);
 				if(temp == 0){
 					dx = 2;
-					if(checkCollision(32, 0)){dx = 0; isMoving = false;}	
+					if(checkCollision(worldX + 32, worldY)){dx = 0; isMoving = false;}	
 					setSprite(right);
 				}
 				if(temp == 1){
 					dx = -2;
-					if(checkCollision(-32, 0)){dx = 0; isMoving = false;}	
+					if(checkCollision(worldX - 32, worldY)){dx = 0; isMoving = false;}	
 					setSprite(left);
 				}
 				if(temp == 2){
 					dy = 2;
-					if(checkCollision(0, 32)){dy = 0; isMoving = false;}	
+					if(checkCollision(worldX, worldY + 32)){dy = 0; isMoving = false;}	
 					setSprite(down);
 				}
 				if(temp == 3){
 					dy = -2;
-					if(checkCollision(0, -32)){dy = 0; isMoving = false;}	
+					if(checkCollision(worldX, worldY - 32)){dy = 0; isMoving = false;}	
 					setSprite(up);
 				}
 				time = System.nanoTime();
@@ -171,13 +170,6 @@ public class Entity{
     }
     
     public boolean checkCollision(int x, int y){
-    	boolean collides = false;
-    	for(int i = 0; i<World.numOfCollideBlocks; i++){
-    		if(worldX + x == Collision.BlockX[i] && worldY + y == Collision.BlockY[i]){
-				collides = true;
-				break;
-			}
-    	}
-    	return collides;
+    	return Collision.checkCollisionX(x, y);
     }
 }

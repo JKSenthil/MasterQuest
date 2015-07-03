@@ -86,7 +86,7 @@ public class Board extends Canvas implements Runnable
 		g.clearRect(0, 0, width, height);
 		//RENDER HERE
 		if(!manager.getInventoryManager().onInventoryScreen()){
-			g.drawImage(manager.getCamera().getMapImage(), manager.getCamera().getX(), manager.getCamera().getY(), this);
+			g.drawImage(manager.getWorldManager().getCamera().getMapImage(), manager.getWorldManager().getCamera().getX(), manager.getWorldManager().getCamera().getY(), this);
 			g.drawImage(manager.getPlayer().getImage(), manager.getPlayer().getX(), manager.getPlayer().getY(), this);
 			g.drawImage(manager.getChicken().getImage(), manager.getChicken().getX(),manager.getChicken().getY(), this);			
 			g.drawImage(manager.getElephant().getImage(), manager.getElephant().getX(), manager.getElephant().getY(), this);
@@ -96,7 +96,7 @@ public class Board extends Canvas implements Runnable
 		if(manager.getInventoryManager().onInventoryScreen()){
 			if(backgroundDo){
 				pic2D.fillRect(0, 0, 480, 374);
-				pic2D.drawImage(manager.getCamera().getMapImage(), manager.getCamera().getX(), manager.getCamera().getY(), this);
+				pic2D.drawImage(manager.getWorldManager().getCamera().getMapImage(), manager.getWorldManager().getCamera().getX(), manager.getWorldManager().getCamera().getY(), this);
 				pic2D.drawImage(manager.getPlayer().getImage(), manager.getPlayer().getX(), manager.getPlayer().getY(), this);
 				pic2D.drawImage(manager.getChicken().getImage(), manager.getChicken().getX(),manager.getChicken().getY(), this);			
 				pic2D.drawImage(manager.getElephant().getImage(), manager.getElephant().getX(), manager.getElephant().getY(), this);

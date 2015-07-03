@@ -32,26 +32,26 @@ public class MainPlayer extends Entity{
             		dy = -2;
             		isMoving = true;
             	if(isBothDirectionsUsed()) {dx = 0;}
-            	if(checkCollision(0, -32)){dy = 0; isMoving = false;}	
+            	if(checkCollision(worldX, worldY - 32)){dy = 0; isMoving = false;}	
             }
     			if(input.down.isPressed()){
             		dy = 2;
             		isMoving = true;
             	if(isBothDirectionsUsed()) {dx = 0;}
-            	if(checkCollision(0, 32)){dy = 0; isMoving = false;}	
+            	if(checkCollision(worldX, worldY + 32)){dy = 0; isMoving = false;}	
             }
     			if(input.left.isPressed()){
             		dx = -2;
             		isMoving = true;
             	if(isBothDirectionsUsed()) {dy = 0;}
-            	if(checkCollision(-32, 0)){dx = 0; isMoving = false;}	
+            	if(checkCollision(worldX - 32, worldY)){dx = 0; isMoving = false;}	
             	setSprite(Assets.playerLeft);
             }
     			if(input.right.isPressed()){
             		dx = 2;
             		isMoving = true;
             	if(isBothDirectionsUsed()) {dy = 0;}
-            	if(checkCollision(32, 0)){dx = 0; isMoving = false;}	
+            	if(checkCollision(worldX + 32, worldY)){dx = 0; isMoving = false;}	
             	setSprite(Assets.playerRight);
             }
     	}

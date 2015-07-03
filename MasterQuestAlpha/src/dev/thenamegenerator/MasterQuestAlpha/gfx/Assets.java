@@ -29,7 +29,7 @@ public class Assets
    public static BufferedImage ironShortSword;
    
    public static void init(){
-	   SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("tile/TileSheetg.png"));
+	   SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("tile/TileSheet.png"));
 	   grass = sheet.crop(0, 0, 32, 32);
 	   water = sheet.crop(32, 0, 32, 32);
 	   path = sheet.crop(0, 32, 32, 32);

@@ -7,19 +7,15 @@ public class Collision {
 	public static int[] BlockX;
 	public static int[] BlockY;
 	
-	int[] world = new int[World.xBlock * World.yBlock];
+	public static int[][] currentWorld = World.StartMapTwo;
 	
-	int[] blocksNotToTouch = {1,4,6,7};
+	public static int[] blocksNotToTouch = {1,4,6,7};
 	
-	public Collision(int[] world){
-		for(int i = 0; i<(World.xBlock * World.yBlock); i++){
-			this.world[i]=world[i];
-		}
-		
-		for(int i = 0; i<(World.xBlock * World.yBlock); i+=World.xBlock){
-			for(int x = 0; x<World.xBlock; x++){
+	public static void init(int[][] world){
+		for(int y = 0; y < world.length; y++){
+			for(int x = 0; x < world[0].length; x++){
 				for(int z = 0; z<blocksNotToTouch.length; z++){
-					if(world[x+i]==blocksNotToTouch[z]){
+					if(world[y][x] == blocksNotToTouch[z]){
 						World.numOfCollideBlocks++;
 						break;
 					}
@@ -30,41 +26,38 @@ public class Collision {
 		BlockY = new int[World.numOfCollideBlocks];
 	}
 	
-	public void initCollision(){
-    	int count = 0;
-    	int Index = 0;
-    	
-    	for(int i = 0; i<(World.xBlock * World.yBlock); i+=World.xBlock){
-    		for(int x = 0; x<World.xBlock; x++){
-    			for(int z = 0; z<blocksNotToTouch.length; z++){
-					if(world[x+i]==blocksNotToTouch[z]){
-						BlockX[Index] = 32*x;
-	    				BlockY[Index] = 32*count;
-	    				Index++;
+	public static void loadCollision(int[][] world){
+		
+		int index = 0;
+		
+		for(int y = 0; y < world.length; y++){
+			for(int x = 0; x < world[0].length; x++){
+				for(int z = 0; z < blocksNotToTouch.length; z++){
+					if(world[y][x] == blocksNotToTouch[z]){
+						BlockX[index] = x * 32;
+						BlockY[index] = y * 32;
+						index++;
 						break;
 					}
 				}
-    		}
-    		count++;
-    	}
-    	count = 0;
-    }
-	
-	public boolean checkCollisionX(int x, int y){
+			}
+		}
+	}
+
+	public static boolean checkCollisionX(int x, int y){
 		boolean collides = false;
-		for(int i = 0; i<World.numOfCollideBlocks; i++){
-			if(x == BlockX[i] && y == BlockY[i]){
+		
+		int indexX = x/32;
+		int indexY = y/32;
+		
+		for(int z = 0; z < blocksNotToTouch.length; z++){
+			if(currentWorld[indexY][indexX] == blocksNotToTouch[z]){
 				collides = true;
 				break;
 			}
 		}
+		
 		return collides;
 	}
-
-	public void updateBlocks(int x, int y){
-		for(int i = 0; i<World.numOfCollideBlocks; i++){
-			BlockX[i] += x;
-			BlockY[i] += y;
-		}
-	}
+	
 }

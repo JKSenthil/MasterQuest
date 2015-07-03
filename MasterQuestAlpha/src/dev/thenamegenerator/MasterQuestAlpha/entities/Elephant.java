@@ -22,23 +22,23 @@ public class Elephant extends Entity{
 				temp = rand.nextInt(4);
 				if(temp == 0){
 					dx = 2;
-					if(checkCollision(64, 0)){dx = 0; isMoving = false;}
+					if(checkCollision(worldX + 64, worldY)){dx = 0; isMoving = false;}
 					setSprite(right);
 				}
 				if(temp == 1){
 					dx = -2;
-					if(checkCollision(-32, 0)){dx = 0; isMoving = false;}	
+					if(checkCollision(worldX - 32, worldY)){dx = 0; isMoving = false;}	
 					setSprite(left);
 				}
 				if(temp == 2){
 					dy = 2;
-					if(checkCollision(0, 32)){dy = 0; isMoving = false;}	
-					if(checkCollision(32, 32)){dy = 0; isMoving = false;}	
+					if(checkCollision(worldX, 32)){dy = 0; isMoving = false;}	
+					if(checkCollision(worldX + 32, worldY + 32)){dy = 0; isMoving = false;}	
 				}
 				if(temp == 3){
 					dy = -2;
-					if(checkCollision(0, -32)){dy = 0; isMoving = false;}	
-					if(checkCollision(32, -32)){dy = 0; isMoving = false;}	
+					if(checkCollision(worldX, worldY - 32)){dy = 0; isMoving = false;}	
+					if(checkCollision(worldX + 32, worldY - 32)){dy = 0; isMoving = false;}	
 				}
 				time = System.nanoTime();
 				prevWorldX = worldX;
