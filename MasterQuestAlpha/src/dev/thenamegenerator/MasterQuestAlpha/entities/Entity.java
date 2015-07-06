@@ -7,11 +7,13 @@ import dev.thenamegenerator.MasterQuestAlpha.collision.Collision;
 
 public class Entity{
 	
+	protected int startX, startY;
 	protected int x, y;
 	protected int worldX, worldY;
 	protected int dispositionX, dispositionY;
 	protected int dx, dy;
 	protected int prevWorldX, prevWorldY;
+	protected int mapX, mapY;
 	
 	protected double health;
 	protected double speed;
@@ -21,6 +23,8 @@ public class Entity{
 	protected BufferedImage currentSprite;
 	
 	protected boolean isMoving = false;
+	protected boolean isOnScreen;
+	protected boolean isAlive = true;
 	
 	protected long time;
 	protected long endTime = 0;
@@ -47,6 +51,9 @@ public class Entity{
 		this.worldY = worldY;
 		this.x = x;
 		this.y = y;
+		
+		mapX = x;
+		mapY = y;
 	}
 	
 	public void setSprite(BufferedImage currentSprite){
@@ -66,6 +73,8 @@ public class Entity{
 		y += dy;
 		dispositionX += dx;
 		dispositionY += dy;
+		mapX += dx;
+		mapY += dy;
 	}
 	
 	public void move(){
@@ -144,6 +153,14 @@ public class Entity{
     
     public int getWorldY(){
     	return worldY;
+    }
+    
+    public int getMapX(){
+    	return mapX/32;
+    }
+    
+    public int getMapY(){
+    	return mapY/32;
     }
     
     public void updateXandY(int xd, int yd){

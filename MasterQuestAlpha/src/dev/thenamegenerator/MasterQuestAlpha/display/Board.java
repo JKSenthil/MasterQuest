@@ -1,6 +1,5 @@
 package dev.thenamegenerator.MasterQuestAlpha.display;
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
@@ -22,9 +21,8 @@ public class Board extends Canvas implements Runnable
     
     private GameManager manager;
     
-    Graphics g2d;
+    private Graphics2D pic2D;
     
-    Graphics2D pic2D;
     private BufferedImage background = new BufferedImage(480,374, BufferedImage.TYPE_BYTE_GRAY);
     boolean backgroundDo = true;
     
@@ -40,7 +38,6 @@ public class Board extends Canvas implements Runnable
 
     public Board(){
     	pic2D = background.createGraphics();
-    	pic2D.setColor(Color.WHITE);
     	
     	setFocusable(true);
     	input = new InputHandler(this);
