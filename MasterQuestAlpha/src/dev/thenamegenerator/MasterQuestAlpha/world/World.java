@@ -6,7 +6,8 @@ public class World {
 	public static int yBlock = 32;
 	
 	public static int numOfCollideBlocks = 0;
-
+	
+	//old map, game now uses 2D arrays
 	public static int[] StartMap = {
 			
 			1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, 
@@ -42,10 +43,6 @@ public class World {
 			1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,
 			1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 			
-	};
-	
-	public static int[][] worldOrder = new int[][]{
-
 	};
 	
 	public static int[][] StartMapTwo = new int[][]{
