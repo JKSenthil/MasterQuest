@@ -4,7 +4,7 @@ public class Collision {
 	
 	public static int[][] currentWorld;
 	
-	public static int[] blocksNotToTouch = {1,4,6,7};
+	public static int[] blocksNotToTouch = {1,4,6,7,8};
 	
 	public static void init(int[][] world){
 		currentWorld = world;

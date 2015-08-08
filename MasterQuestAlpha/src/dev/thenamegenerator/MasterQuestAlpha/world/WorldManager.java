@@ -15,6 +15,8 @@ public class WorldManager {
 	private int playerX;
 	private int playerY;
 	
+	private Chunk[][] world;
+	
 	public WorldManager(){
 		camera = new MovingMap(0,0);
 		renderer = new WorldRenderer();

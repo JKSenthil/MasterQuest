@@ -63,7 +63,7 @@ public class Board extends Canvas implements Runnable
 	}
     
     public void init(){
-    	Assets.init();
+    	Assets.init2();
         manager = new GameManager(input, mouseHandler, mouseWheelHandler);
         manager.init();
     }

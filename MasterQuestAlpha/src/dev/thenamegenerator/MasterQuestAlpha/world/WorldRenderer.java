@@ -31,6 +31,14 @@ public class WorldRenderer{
 					 g.drawImage(Assets.window, x*32, y*32, null);
 				 }else if(world[y][x] == 7){
 					 g.drawImage(Assets.roof, x*32, y*32, null);
+				 }else if(world[y][x] == 8){
+					 g.drawImage(Assets.tree, x*32, y*32, null);
+				 }else if(world[y][x] == 9){
+					 g.drawImage(Assets.flower, x*32, y*32, null);
+				 }else if(world[y][x] == 10){
+					 g.drawImage(Assets.bush, x*32, y*32, null);
+				 }else if(world[y][x] == 11){
+					 g.drawImage(Assets.bridge, x*32, y*32, null);
 				 }
 			 }
 		 }
