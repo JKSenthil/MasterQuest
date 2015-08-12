@@ -1,28 +1,16 @@
 package dev.thenamegenerator.MasterQuestAlpha.display;
 
-import java.awt.Canvas;
-
-import dev.thenamegenerator.MasterQuestAlpha.entities.Chicken;
-import dev.thenamegenerator.MasterQuestAlpha.entities.Elephant;
+import dev.thenamegenerator.MasterQuestAlpha.entities.EntityManager;
 import dev.thenamegenerator.MasterQuestAlpha.entities.MainPlayer;
-import dev.thenamegenerator.MasterQuestAlpha.entities.Spider;
 import dev.thenamegenerator.MasterQuestAlpha.input.InputHandler;
 import dev.thenamegenerator.MasterQuestAlpha.input.MouseHandler;
 import dev.thenamegenerator.MasterQuestAlpha.input.MouseWheelHandler;
 import dev.thenamegenerator.MasterQuestAlpha.inventory.InventoryManager;
 import dev.thenamegenerator.MasterQuestAlpha.world.WorldManager;
 
-public class GameManager extends Canvas{
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class GameManager{
 	
 	private MainPlayer player;
-	private Chicken chicken;
-	private Elephant elephant;
-	private Spider spider;
 	
 	private InputHandler input;
 	private MouseHandler mouseHandler;
@@ -30,6 +18,7 @@ public class GameManager extends Canvas{
 	
 	private InventoryManager inventoryManager;
 	private WorldManager worldManager;
+	private EntityManager entityManager;
 	
 	public GameManager(InputHandler input, MouseHandler mouseHandler, MouseWheelHandler mouseWheelHandler){
 		this.input = input;
@@ -41,11 +30,13 @@ public class GameManager extends Canvas{
 		player = new MainPlayer(input);
 		
 		inventoryManager = new InventoryManager(input, mouseHandler, mouseWheelHandler);
-		worldManager = new WorldManager();
-		
-		chicken = new Chicken();
-		elephant = new Elephant();
-		spider = new Spider();
+		worldManager = new WorldManager(-1*player.getWorldX()+224, -1*player.getWorldY()+128);
+		entityManager = new EntityManager();
+		entityManager.spawnAnimals();
+	}
+	
+	public EntityManager getEntityManager(){
+		return entityManager;
 	}
 	
 	public WorldManager getWorldManager(){
@@ -56,20 +47,8 @@ public class GameManager extends Canvas{
 		return player;
 	}
 	
-	public Chicken getChicken(){
-		return chicken;
-	}
-	
-	public Elephant getElephant(){
-		return elephant;
-	}
-	
 	public InventoryManager getInventoryManager(){
 		return inventoryManager;
-	}
-	
-	public Spider getSpider(){
-		return spider;
 	}
 	
 	public void tick(){
@@ -79,18 +58,24 @@ public class GameManager extends Canvas{
 			worldManager.getCamera().setY(-1*player.getWorldY()+128);
 			
 			player.move();
-			chicken.move();
-			elephant.move();
-			spider.move();
 			
-			chicken.setX(worldManager.getCamera().getX() + 224 + chicken.getDispositionX());
-			chicken.setY(worldManager.getCamera().getY() + 128 + chicken.getDispositionY());
+			for(int i = 0; i < entityManager.getAnimals().size(); i++){
+				entityManager.getAnimals().get(i).move();
+				entityManager.getAnimals().get(i).setX(worldManager.getCamera().getX() + entityManager.getAnimals().get(i).getStartX() + entityManager.getAnimals().get(i).getDispositionX());
+				entityManager.getAnimals().get(i).setY(worldManager.getCamera().getY() + entityManager.getAnimals().get(i).getStartY() + entityManager.getAnimals().get(i).getDispositionY());
+			}
+			//chicken.move();
+			//elephant.move();
+			//spider.move();
 			
-			spider.setX(worldManager.getCamera().getX() + 128 + spider.getDispositionX());
-			spider.setY(worldManager.getCamera().getY() + 32 + spider.getDispositionY());
+			//chicken.setX(worldManager.getCamera().getX() + chicken.getStartX() + chicken.getDispositionX());
+			//chicken.setY(worldManager.getCamera().getY() + chicken.getStartY() + chicken.getDispositionY());
 			
-			elephant.setX(worldManager.getCamera().getX() + 224 + elephant.getDispositionX());
-			elephant.setY(worldManager.getCamera().getY() + 256 + elephant.getDispositionY());
+			//spider.setX(worldManager.getCamera().getX() + 128 + spider.getDispositionX());
+			//spider.setY(worldManager.getCamera().getY() + 32 + spider.getDispositionY());
+			
+			//elephant.setX(worldManager.getCamera().getX() + 224 + elephant.getDispositionX());
+			//elephant.setY(worldManager.getCamera().getY() + 256 + elephant.getDispositionY());
 		}
 	}
 }

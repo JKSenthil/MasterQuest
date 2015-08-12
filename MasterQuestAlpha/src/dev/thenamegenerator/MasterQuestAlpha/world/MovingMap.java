@@ -6,9 +6,10 @@ public class MovingMap {
 
 	int x, y;
 	int prevX, prevY;
-	int width, height;
-	int differenceX, differenceY;
+	int width, height;;
 	BufferedImage image;
+	
+	boolean secondImageInUse = false;
 	
 	public MovingMap(int x, int y){
 		this.x = x;
@@ -28,35 +29,14 @@ public class MovingMap {
 	}
 	
 	public void setX(int x){
-		prevX = x;
 		this.x = x;
-		differenceX = (x - prevX);
 	}
 	
 	public void setY(int y){
-		prevY = y;
 		this.y = y;
-		differenceY = (y - prevY);
 	}
 	
-	public int getPrevX(){
-		return prevX;
-	}
-	
-	public int getPrevY(){
-		return prevY;
-	}
-	
-	public int getXDifference(){
-		return differenceX;
-	}
-	
-	public int getYDifference(){
-		return differenceY;
-	}
-
 	public BufferedImage getMapImage() {
 		return image;
 	}
-	
 }

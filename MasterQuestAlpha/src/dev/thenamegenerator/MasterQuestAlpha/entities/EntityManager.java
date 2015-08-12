@@ -1,6 +1,7 @@
 package dev.thenamegenerator.MasterQuestAlpha.entities;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class EntityManager {
 
@@ -14,8 +15,23 @@ public class EntityManager {
 		mobs = new ArrayList<Entity>();
 	}
 	
-	public void spawnAnimal(){
-		
+	public void spawnAnimals(){
+		Random rand = new Random();
+		for(int c = 0; c < 15; c++){
+			int x = rand.nextInt(120);
+			int y = rand.nextInt(68);
+			animals.add(new Chicken());
+			animals.get(c).setLocation(x*32, y*32);
+			while(animals.get(c).checkCollision(x*32, y*32)){
+				x = rand.nextInt(120);
+				y = rand.nextInt(68);
+				animals.get(c).setLocation(x*32, y*32);
+			}
+		}
+	}
+	
+	public ArrayList<Entity> getAnimals(){
+		return animals;
 	}
 	
 	public void addAnimal(Entity e){

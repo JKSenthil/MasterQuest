@@ -46,14 +46,30 @@ public class Entity{
 		this.down = down;
 	}
 	
-	public void initLocation(int worldX, int worldY, int x, int y){
-		this.worldX = worldX;
-		this.worldY = worldY;
+	public void setLocation(int x, int y){
+		this.worldX = x;
+		this.worldY = y;
+		
+		startX = worldX;
+		startY = worldY;
+		
 		this.x = x;
 		this.y = y;
 		
 		mapX = x;
 		mapY = y;
+	}
+	
+	public void setRandomLocation(){
+		
+	}
+	
+	public int getStartX(){
+		return startX;
+	}
+	
+	public int getStartY(){
+		return startY;
 	}
 	
 	public void setSprite(BufferedImage currentSprite){

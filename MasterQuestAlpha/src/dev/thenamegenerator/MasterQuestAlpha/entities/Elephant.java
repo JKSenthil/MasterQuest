@@ -9,7 +9,6 @@ public class Elephant extends Entity{
 		left = Assets.EL;
 		right = Assets.ER;
 		setSprite(left);
-		initLocation(224, 256, 224, 256);
 		speed = 3;
 	}
 	@Override

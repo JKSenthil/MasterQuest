@@ -8,7 +8,6 @@ public class Spider extends Entity{
 	
 	public Spider(){
 		initSprites(Assets.spider, Assets.spider, Assets.spider, Assets.spider);
-		initLocation(128, 32, 128, 32);
 		setSprite(Assets.spider);
 		speed = 3;
 	}
