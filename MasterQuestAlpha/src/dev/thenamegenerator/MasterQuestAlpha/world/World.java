@@ -1,5 +1,7 @@
 package dev.thenamegenerator.MasterQuestAlpha.world;
 
+import java.awt.image.BufferedImage;
+
 public class World {
 
 	public static int xBlock = 30;
@@ -85,5 +87,7 @@ public class World {
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1},
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 	};
+	
+	public static BufferedImage worldImage;
 
 }

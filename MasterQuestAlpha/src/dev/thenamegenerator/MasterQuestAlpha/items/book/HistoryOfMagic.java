@@ -1,4 +1,6 @@
-package dev.thenamegenerator.MasterQuestAlpha.items;
+package dev.thenamegenerator.MasterQuestAlpha.items.book;
+
+import dev.thenamegenerator.MasterQuestAlpha.items.Book;
 
 public class HistoryOfMagic extends Book{
 	

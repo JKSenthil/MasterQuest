@@ -1,6 +1,7 @@
-package dev.thenamegenerator.MasterQuestAlpha.items;
+package dev.thenamegenerator.MasterQuestAlpha.items.food;
 
 import dev.thenamegenerator.MasterQuestAlpha.gfx.Assets;
+import dev.thenamegenerator.MasterQuestAlpha.items.Food;
 
 public class Chicken extends Food{
 	

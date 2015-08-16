@@ -1,5 +1,6 @@
 package dev.thenamegenerator.MasterQuestAlpha.display;
 
+import dev.thenamegenerator.MasterQuestAlpha.combat.StatusBar;
 import dev.thenamegenerator.MasterQuestAlpha.entities.EntityManager;
 import dev.thenamegenerator.MasterQuestAlpha.entities.MainPlayer;
 import dev.thenamegenerator.MasterQuestAlpha.input.InputHandler;
@@ -20,6 +21,8 @@ public class GameManager{
 	private WorldManager worldManager;
 	private EntityManager entityManager;
 	
+	private StatusBar statusBar;
+	
 	public GameManager(InputHandler input, MouseHandler mouseHandler, MouseWheelHandler mouseWheelHandler){
 		this.input = input;
 		this.mouseHandler = mouseHandler;
@@ -29,10 +32,13 @@ public class GameManager{
 	public void init(){
 		player = new MainPlayer(input);
 		
-		inventoryManager = new InventoryManager(input, mouseHandler, mouseWheelHandler);
 		worldManager = new WorldManager(-1*player.getWorldX()+224, -1*player.getWorldY()+128);
+		inventoryManager = new InventoryManager(input, mouseHandler, mouseWheelHandler);
+		
 		entityManager = new EntityManager();
 		entityManager.spawnAnimals();
+		
+		statusBar = new StatusBar(player.getHealth(), player.getMagic());
 	}
 	
 	public EntityManager getEntityManager(){
@@ -51,6 +57,10 @@ public class GameManager{
 		return inventoryManager;
 	}
 	
+	public StatusBar getStatusBar(){
+		return statusBar;
+	}
+	
 	public void tick(){
 		inventoryManager.tick();
 		if(!inventoryManager.onInventoryScreen()){
@@ -64,18 +74,8 @@ public class GameManager{
 				entityManager.getAnimals().get(i).setX(worldManager.getCamera().getX() + entityManager.getAnimals().get(i).getStartX() + entityManager.getAnimals().get(i).getDispositionX());
 				entityManager.getAnimals().get(i).setY(worldManager.getCamera().getY() + entityManager.getAnimals().get(i).getStartY() + entityManager.getAnimals().get(i).getDispositionY());
 			}
-			//chicken.move();
-			//elephant.move();
-			//spider.move();
 			
-			//chicken.setX(worldManager.getCamera().getX() + chicken.getStartX() + chicken.getDispositionX());
-			//chicken.setY(worldManager.getCamera().getY() + chicken.getStartY() + chicken.getDispositionY());
-			
-			//spider.setX(worldManager.getCamera().getX() + 128 + spider.getDispositionX());
-			//spider.setY(worldManager.getCamera().getY() + 32 + spider.getDispositionY());
-			
-			//elephant.setX(worldManager.getCamera().getX() + 224 + elephant.getDispositionX());
-			//elephant.setY(worldManager.getCamera().getY() + 256 + elephant.getDispositionY());
+			statusBar.updateStatusBars(player.getHealth(), player.getMagic());
 		}
 	}
 }

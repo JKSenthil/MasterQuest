@@ -6,12 +6,24 @@ import java.util.Collections;
 import dev.thenamegenerator.MasterQuestAlpha.input.InputHandler;
 import dev.thenamegenerator.MasterQuestAlpha.input.MouseHandler;
 import dev.thenamegenerator.MasterQuestAlpha.input.MouseWheelHandler;
-import dev.thenamegenerator.MasterQuestAlpha.items.*;
+import dev.thenamegenerator.MasterQuestAlpha.items.Item;
+import dev.thenamegenerator.MasterQuestAlpha.items.armor.OrangeRobe;
+import dev.thenamegenerator.MasterQuestAlpha.items.book.MisfortuneEhsu;
+import dev.thenamegenerator.MasterQuestAlpha.items.food.Apple;
+import dev.thenamegenerator.MasterQuestAlpha.items.food.Banana;
+import dev.thenamegenerator.MasterQuestAlpha.items.food.Bread;
+import dev.thenamegenerator.MasterQuestAlpha.items.food.Carrot;
+import dev.thenamegenerator.MasterQuestAlpha.items.food.Chicken;
+import dev.thenamegenerator.MasterQuestAlpha.items.food.Fish;
+import dev.thenamegenerator.MasterQuestAlpha.items.food.Watermelon;
+import dev.thenamegenerator.MasterQuestAlpha.items.weapons.IronShortSword;
 
 public class InventoryManager{
 	
 	private Inventory inventory;
 	private InventoryScrollScreen scrollScreen;
+	private InventoryWorldMap worldMap; 
+	private InventoryAction action;
 	
 	private boolean done = false;
 	
@@ -33,6 +45,8 @@ public class InventoryManager{
 	public InventoryManager(InputHandler input, MouseHandler mouseHandler, MouseWheelHandler mouseWheelHandler){	
 		inventory = new Inventory(input, mouseHandler);
 		scrollScreen = new InventoryScrollScreen(mouseHandler, mouseWheelHandler);
+		worldMap = new InventoryWorldMap();
+		action = new InventoryAction(mouseHandler);
 		
 		addItem(new Banana());
 		addItem(new Carrot());
@@ -62,12 +76,22 @@ public class InventoryManager{
 		addItem(new Bread());
 		
 		addItem(new MisfortuneEhsu());
+		
+		addItem(new OrangeRobe());
 	}
 	
-	public boolean getItemSelected(){
+	public boolean isItemSelected(){
 		return itemSelected;
 	}
 	
+	public InventoryAction getAction() {
+		return action;
+	}
+
+	public void setAction(InventoryAction action) {
+		this.action = action;
+	}
+
 	public String getDescription(){
 		return description;
 	}
@@ -86,6 +110,10 @@ public class InventoryManager{
 	
 	public InventoryScrollScreen getInventoryScrollScreen(){
 		return scrollScreen;
+	}
+	
+	public InventoryWorldMap getInventoryWorldMap(){
+		return worldMap;
 	}
 	
 	public void addItem(Item item){
@@ -135,6 +163,49 @@ public class InventoryManager{
 		playerTypeMisc.add(playerMisc.get(playerMisc.size()-1));
 	}
 	
+	public void renderItems(ArrayList<Item> playerMisc){
+		endLoop = false;
+		int index = 0;
+		int count = 1;
+		Item prevItem;
+		while(!endLoop){
+			prevItem = playerMisc.get(index);
+			if(index + 1 == playerMisc.size()){
+				scrollScreen.addItem(playerMisc.get(index));
+				break;
+			}
+			if(prevItem.getId() == playerMisc.get(index + 1).getId()){
+				for(int i = index + 1; i < playerMisc.size(); i++){
+					if(prevItem.getId() == playerMisc.get(i).getId()){
+						count++;
+						if(i == playerMisc.size() - 1){
+							scrollScreen.stackItem(playerMisc.get(index), count);
+							index = i;
+							break;
+						}
+					}else{
+						scrollScreen.stackItem(playerMisc.get(index), count);
+						index = i - 1;
+						break;
+					}
+				}
+			}else{
+				scrollScreen.addItem(playerMisc.get(index));
+			}
+			index++;
+			count = 1;
+			if(index >= playerMisc.size()){
+				endLoop = true;
+			}
+		}
+		if(scrollScreen.itemSelected()){
+			itemSelected = true;
+			description = playerTypeMisc.get(scrollScreen.getItemNumber()).getDescription();
+		}else{
+			itemSelected = false;
+		}
+	}
+	
 	public void tick(){
 		inventory.check();
 		if(inventory.renderInventory){
@@ -173,6 +244,12 @@ public class InventoryManager{
 				for(int i = 0; i<playerArmor.size(); i++){
 					scrollScreen.addItem(playerArmor.get(i));
 				}
+				if(scrollScreen.itemSelected()){
+					itemSelected = true;
+					description = playerArmor.get(scrollScreen.getItemNumber() - 1).getDescription();
+				}else{
+					itemSelected = false;
+				}
 			}else if(inventory.inPotion){
 				for(int i = 0; i<playerPotion.size(); i++){
 					scrollScreen.addItem(playerPotion.get(i));
@@ -182,46 +259,7 @@ public class InventoryManager{
 					scrollScreen.addItem(playerMagic.get(i));
 				}
 			}else if(inventory.inMisc){
-				endLoop = false;
-				int index = 0;
-				int count = 1;
-				Item prevItem;
-				while(!endLoop){
-					prevItem = playerMisc.get(index);
-					if(index + 1 == playerMisc.size()){
-						scrollScreen.addItem(playerMisc.get(index));
-						break;
-					}
-					if(prevItem.getId() == playerMisc.get(index + 1).getId()){
-						for(int i = index + 1; i < playerMisc.size(); i++){
-							if(prevItem.getId() == playerMisc.get(i).getId()){
-								count++;
-								if(i == playerMisc.size() - 1){
-									scrollScreen.stackItem(playerMisc.get(index), count);
-									index = i;
-									break;
-								}
-							}else{
-								scrollScreen.stackItem(playerMisc.get(index), count);
-								index = i - 1;
-								break;
-							}
-						}
-					}else{
-						scrollScreen.addItem(playerMisc.get(index));
-					}
-					index++;
-					count = 1;
-					if(index >= playerMisc.size()){
-						endLoop = true;
-					}
-				}
-				if(scrollScreen.itemSelected()){
-					itemSelected = true;
-					description = playerTypeMisc.get(scrollScreen.getItemNumber()).getDescription();
-				}else{
-					itemSelected = false;
-				}
+				renderItems(playerMisc);
 			}
 		}
 	}

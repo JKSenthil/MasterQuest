@@ -33,9 +33,19 @@ public class Assets{
 	public static BufferedImage pinkHairUp, pinkHairDown, pinkHairLeft, pinkHairRight;
 	public static BufferedImage yellowHairUp, yellowHairDown, yellowHairLeft, yellowHairRight;
 	public static BufferedImage grayHairUp, grayHairDown, grayHairLeft, grayHairRight;
+	
+	//armor stuff
+	public static BufferedImage orangeRobeUp, orangeRobeDown, orangeRobeLeft, orangeRobeRight;
+	public static BufferedImage blackRobeUp, blackRobeDown, blackRobeLeft, blackRobeRight;
+	public static BufferedImage redRobeUp, redRobeDown, redRobeLeft, redRobeRight;
+	public static BufferedImage pinkRobeUp, pinkRobeDown, pinkRobeLeft, pinkRobeRight;
+	public static BufferedImage greenRobeUp, greenRobeDown, greenRobeLeft, greenRobeRight;
+	public static BufferedImage blueRobeUp, blueRobeDown, blueRobeLeft, blueRobeRight;
    
    
    public static BufferedImage inventory;
+   
+   public static BufferedImage trashButton, equipButton;
    
    //entity images
    public static BufferedImage CL, CR, CD, CU;
@@ -191,7 +201,7 @@ public class Assets{
 	   EL = sheet.crop(0, 0, 64, 32);
 	   ER = sheet.crop(0, 32, 64, 32);
 	   
-	   inventory = ImageLoader.loadImage("Inventory.png");
+	   inventory = ImageLoader.loadImage("inventory_sprites/Inventory.png");
 	   
 	   carrot = ImageLoader.loadImage("food/Carrot.png");
 	   banana = ImageLoader.loadImage("food/Banana.png");
@@ -257,6 +267,40 @@ public class Assets{
 	   grayHairRight = sheet.crop(15, 27, 14, 8);
 	   grayHairLeft = sheet.crop(35, 27, 14, 8);
 	   grayHairUp = sheet.crop(35, 9, 14, 8);
+	   
+	   sheet.changeImage(ImageLoader.loadImage("clothing/Robes.png"));
+	   orangeRobeUp = sheet.crop(0, 0, 32, 32);
+	   orangeRobeDown = sheet.crop(0, 0, 32, 32);
+	   orangeRobeRight = sheet.crop(32, 0, 32, 32);
+	   orangeRobeLeft = sheet.crop(64, 0, 32, 32);
+	   
+	   blackRobeUp = sheet.crop(0, 32, 32, 32);
+	   blackRobeDown = sheet.crop(0, 32, 32, 32);
+	   blackRobeRight = sheet.crop(32, 32, 32, 32);
+	   blackRobeLeft = sheet.crop(64, 32, 32, 32);
+	   
+	   redRobeUp = sheet.crop(0, 64, 32, 32);
+	   redRobeDown = sheet.crop(0, 64, 32, 32);
+	   redRobeRight = sheet.crop(32, 64, 32, 32);
+	   redRobeLeft = sheet.crop(64, 64, 32, 32);
+	   
+	   pinkRobeUp = sheet.crop(0, 96, 32, 32);
+	   pinkRobeDown = sheet.crop(0, 96, 32, 32);
+	   pinkRobeRight = sheet.crop(32, 96, 32, 32);
+	   pinkRobeLeft = sheet.crop(64, 96, 32, 32);
+	   
+	   greenRobeUp = sheet.crop(0, 128, 32, 32);
+	   greenRobeDown = sheet.crop(0, 128, 32, 32);
+	   greenRobeRight = sheet.crop(32, 128, 32, 32);
+	   greenRobeLeft = sheet.crop(64, 128, 32, 32);
+	   
+	   blueRobeUp = sheet.crop(0, 160, 32, 32);
+	   blueRobeDown = sheet.crop(0, 160, 32, 32);
+	   blueRobeRight = sheet.crop(32, 160, 32, 32);
+	   blueRobeLeft = sheet.crop(64, 160, 32, 32);
+	   
+	   equipButton = ImageLoader.loadImage("inventory_sprites/equip.png");
+	   trashButton = ImageLoader.loadImage("inventory_sprites/trash.png");
    }
    
 }

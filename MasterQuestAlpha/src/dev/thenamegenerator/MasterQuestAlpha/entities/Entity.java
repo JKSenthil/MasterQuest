@@ -16,6 +16,7 @@ public class Entity{
 	protected int mapX, mapY;
 	
 	protected double health;
+	protected double magic;
 	protected double speed;
 	protected String name;
 	
@@ -192,6 +193,9 @@ public class Entity{
     	this.y = y;
     }
     
+    public void setHealth(double health){
+    	this.health = health;
+    }
     
     public void reset(){
     	dx = 0;
@@ -200,6 +204,14 @@ public class Entity{
     
     public BufferedImage getImage(){
     	return currentSprite;
+    }
+    
+    public double getHealth(){
+    	return health;
+    }
+    
+    public double getMagic(){
+    	return magic;
     }
     
     public boolean checkCollision(int x, int y){

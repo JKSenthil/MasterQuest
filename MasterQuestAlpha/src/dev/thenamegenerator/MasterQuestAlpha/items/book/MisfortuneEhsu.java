@@ -1,6 +1,7 @@
-package dev.thenamegenerator.MasterQuestAlpha.items;
+package dev.thenamegenerator.MasterQuestAlpha.items.book;
 
 import dev.thenamegenerator.MasterQuestAlpha.gfx.Assets;
+import dev.thenamegenerator.MasterQuestAlpha.items.Book;
 
 public class MisfortuneEhsu extends Book{
 	

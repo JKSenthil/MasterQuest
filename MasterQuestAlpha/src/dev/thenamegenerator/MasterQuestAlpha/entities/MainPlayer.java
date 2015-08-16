@@ -2,6 +2,7 @@ package dev.thenamegenerator.MasterQuestAlpha.entities;
 
 import java.awt.image.BufferedImage;
 
+import dev.thenamegenerator.MasterQuestAlpha.combat.Combat;
 import dev.thenamegenerator.MasterQuestAlpha.gfx.Assets;
 import dev.thenamegenerator.MasterQuestAlpha.input.InputHandler;
 
@@ -10,7 +11,10 @@ public class MainPlayer extends Entity{
     private InputHandler input;
     
     private boolean hasHair = false;
-    private BufferedImage[] hair = {Assets.pinkHairLeft, Assets.pinkHairRight, Assets.pinkHairDown, Assets.pinkHairUp};
+    private BufferedImage[] hair = {Assets.blackHairLeft, Assets.blackHairRight, Assets.blackHairDown, Assets.blackHairUp};
+    
+    private boolean hasArmor = false;
+    private BufferedImage[] armor = {Assets.orangeRobeLeft, Assets.orangeRobeRight, Assets.orangeRobeDown, Assets.orangeRobeUp};
     
     private int direction = 1;
     
@@ -23,6 +27,10 @@ public class MainPlayer extends Entity{
 		speed = 5;
 		
 		hasHair = true;
+		hasArmor = true;
+		
+		health = Combat.calcHP(25, 1);
+		magic = 25;
 	}
     
     public int getDirection(){
@@ -33,8 +41,16 @@ public class MainPlayer extends Entity{
     	return hair;
     }
     
+    public BufferedImage[] getArmor(){
+    	return armor;
+    }
+    
     public boolean hasHair(){
     	return hasHair;
+    }
+    
+    public boolean hasArmor(){
+    	return hasArmor;
     }
  
     public boolean isBothDirectionsUsed(){

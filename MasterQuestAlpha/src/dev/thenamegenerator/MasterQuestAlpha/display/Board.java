@@ -88,9 +88,14 @@ public class Board extends Canvas implements Runnable
 			if(manager.getPlayer().hasHair()){
 				g.drawImage(manager.getPlayer().getHair()[manager.getPlayer().getDirection()], 224+9, 128+3, this);
 			}
+			if(manager.getPlayer().hasArmor()){
+				g.drawImage(manager.getPlayer().getArmor()[manager.getPlayer().getDirection()], 224, 128, this);
+			}
 			for(int i = 0; i < manager.getEntityManager().getAnimals().size(); i++){
 				g.drawImage(manager.getEntityManager().getAnimals().get(i).getImage(), manager.getEntityManager().getAnimals().get(i).getX(), manager.getEntityManager().getAnimals().get(i).getY(), this);
 			}
+			g.drawImage(manager.getStatusBar().getHealth(), 10, 325, this);
+			g.drawImage(manager.getStatusBar().getMagic(), 10, 335, this);
 			backgroundDo = true;
 		}
 		if(manager.getInventoryManager().onInventoryScreen()){
@@ -102,9 +107,15 @@ public class Board extends Canvas implements Runnable
 			}
 			g.drawImage(background, 0, 0, this);
 			g.drawImage(manager.getInventoryManager().getInventory().getImage(), 32, 32, this);
-			g.drawImage(manager.getInventoryManager().getInventoryScrollScreen().getScrollScreen(), 128, 83, this);
-			if(manager.getInventoryManager().getItemSelected()){
-				g.drawString(manager.getInventoryManager().getDescription(), 332, 260);
+			if(manager.getInventoryManager().getInventory().inMap){
+				g.drawImage(manager.getInventoryManager().getInventoryWorldMap().getRealWorldMap(), 128, 83, this);
+			}else{
+				g.drawImage(manager.getInventoryManager().getInventoryScrollScreen().getScrollScreen(), 128, 83, this);
+				if(manager.getInventoryManager().isItemSelected()){
+					g.drawString(manager.getInventoryManager().getDescription(), 332, 260);
+					g.drawImage(manager.getInventoryManager().getAction().getEquip(), 342, 90, this);
+					g.drawImage(manager.getInventoryManager().getAction().getTrash(), 342, 130, this);
+				}
 			}
 		}
 		//END RENDER

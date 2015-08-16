@@ -1,6 +1,7 @@
-package dev.thenamegenerator.MasterQuestAlpha.items;
+package dev.thenamegenerator.MasterQuestAlpha.items.weapons;
 
 import dev.thenamegenerator.MasterQuestAlpha.gfx.Assets;
+import dev.thenamegenerator.MasterQuestAlpha.items.Weapon;
 
 public class IronShortSword extends Weapon{
 	public IronShortSword(){

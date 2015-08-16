@@ -40,6 +40,7 @@ public class WorldManager{
 			}
 		}
 		camera.setImage(worldImage);
+		World.worldImage = worldImage;
 	}
 	
 	public void loadChunks(){
