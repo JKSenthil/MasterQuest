@@ -172,6 +172,14 @@ public class Entity{
     	return worldY;
     }
     
+    public void setWorldX(int x){
+    	this.worldX = x;
+    }
+    
+    public void setWorldY(int y){
+    	this.worldY = y;
+    }
+    
     public int getMapX(){
     	return mapX/32;
     }

@@ -3,22 +3,31 @@ package dev.thenamegenerator.MasterQuestAlpha.entities;
 import java.awt.image.BufferedImage;
 
 import dev.thenamegenerator.MasterQuestAlpha.combat.Combat;
+import dev.thenamegenerator.MasterQuestAlpha.display.Board;
 import dev.thenamegenerator.MasterQuestAlpha.gfx.Assets;
 import dev.thenamegenerator.MasterQuestAlpha.input.InputHandler;
+import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet02Move;
 
 public class MainPlayer extends Entity{
 	
     private InputHandler input;
     
     private boolean hasHair = false;
-    private BufferedImage[] hair = {Assets.blackHairLeft, Assets.blackHairRight, Assets.blackHairDown, Assets.blackHairUp};
+    private BufferedImage[] hair = {Assets.redHairLeft, Assets.redHairRight, Assets.redHairDown, Assets.redHairUp};
     
     private boolean hasArmor = false;
     private BufferedImage[] armor = {Assets.orangeRobeLeft, Assets.orangeRobeRight, Assets.orangeRobeDown, Assets.orangeRobeUp};
     
+    private boolean hasWeapon = false;
+    private BufferedImage[] weapon;
+    
     private int direction = 1;
     
-    public MainPlayer(InputHandler input) {
+    private boolean isAttacking = false;
+    
+    private String userName;
+    
+    public MainPlayer(InputHandler input, String userName) {
 		this.input = input;
 		initSprites(Assets.playerLeft, Assets.playerRight, Assets.playerDown, Assets.playerUp);
 		setLocation(480, 480);
@@ -26,12 +35,18 @@ public class MainPlayer extends Entity{
 		time = System.nanoTime();
 		speed = 5;
 		
-		hasHair = true;
+		this.userName = userName;
+		
+		//hasHair = true;
 		hasArmor = true;
 		
 		health = Combat.calcHP(25, 1);
 		magic = 25;
 	}
+    
+    public boolean isAttacking(){
+    	return isAttacking;
+    }
     
     public int getDirection(){
     	return direction;
@@ -114,6 +129,8 @@ public class MainPlayer extends Entity{
     			}
         		time = endTime;
     		}
+    		Packet02Move packet = new Packet02Move(this.userName, this.worldX, this.worldY);
+    		packet.writeData(Board.board.socketClient);
     	}
     }
     
@@ -126,5 +143,9 @@ public class MainPlayer extends Entity{
 		dx = 0;
 		dy = 0;
 	}
+    
+    public String getUsername(){
+    	return userName;
+    }
 
 }

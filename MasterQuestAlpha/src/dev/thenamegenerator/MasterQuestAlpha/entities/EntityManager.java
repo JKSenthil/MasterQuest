@@ -8,11 +8,13 @@ public class EntityManager {
 	ArrayList<Entity> animals;
 	ArrayList<Entity> npc;
 	ArrayList<Entity> mobs;
+	public ArrayList<PlayerMP> players;
 	
 	public EntityManager(){
 		animals = new ArrayList<Entity>();
 		npc = new ArrayList<Entity>();
 		mobs = new ArrayList<Entity>();
+		players = new ArrayList<PlayerMP>();
 	}
 	
 	public void spawnAnimals(){
@@ -54,6 +56,42 @@ public class EntityManager {
 		for(int i = 0; i < animals.size(); i++){
 			animals.get(i).move();
 		}
+	}
+
+	public void removePlayers(String username) {
+		int index = 0;
+		for(PlayerMP p : players){
+			if(p.getUsername().equalsIgnoreCase(username)){
+				break;
+			}
+			index++;
+		}
+		players.remove(index);
+	}
+	
+	private int getPlayerMPIndex(String username) {
+		int index = 0;
+		if(this.players.size() != 0){
+			for(PlayerMP p : players){
+				if(p.getUsername().equalsIgnoreCase(username)){
+					break;
+				}
+				index++;
+			}
+		}
+		return index;
+	}
+	
+	public void movePlayer(String userName, int x, int y){
+		int index = getPlayerMPIndex(userName);
+		this.players.get(index).setWorldX(x);
+		this.players.get(index).setWorldY(y);
+		
+		this.players.get(index).dispositionX += x;
+		this.players.get(index).dispositionY += y;
+		
+		//this.players.get(index).setX(this.players.get(index).getX() + this.players.get(index).getWorldX() - this.players.get(index).dispositionX);
+		//this.players.get(index).setY(this.players.get(index).getY() + this.players.get(index).getWorldY() - this.players.get(index).dispositionY);
 	}
 	
 }

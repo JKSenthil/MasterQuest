@@ -5,17 +5,26 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import dev.thenamegenerator.MasterQuestAlpha.gfx.Assets;
 import dev.thenamegenerator.MasterQuestAlpha.input.InputHandler;
 import dev.thenamegenerator.MasterQuestAlpha.input.MouseHandler;
 import dev.thenamegenerator.MasterQuestAlpha.input.MouseWheelHandler;
+import dev.thenamegenerator.MasterQuestAlpha.input.WindowHandler;
+import dev.thenamegenerator.MasterQuestAlpha.net.GameClient;
+import dev.thenamegenerator.MasterQuestAlpha.net.GameServer;
+import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet00Login;
 
 public class Board extends Canvas implements Runnable
 {
 
 	private static final long serialVersionUID = 1L;
 
-    private InputHandler input;
+	public static Board board;
+	
+    public InputHandler input;
     private MouseHandler mouseHandler;
     private MouseWheelHandler mouseWheelHandler;
     
@@ -23,7 +32,7 @@ public class Board extends Canvas implements Runnable
     
     private Graphics2D pic2D;
     
-    private BufferedImage background = new BufferedImage(480,374, BufferedImage.TYPE_BYTE_GRAY);
+    private BufferedImage background = new BufferedImage(480, 374, BufferedImage.TYPE_BYTE_GRAY);
     boolean backgroundDo = true;
     
     public Thread thread;
@@ -35,14 +44,52 @@ public class Board extends Canvas implements Runnable
     
     private int frames = 0;
     private int ticks = 0;
+    
+    public int actualFrame = 0;
+    public int actualTicks = 0;
+    
+    public JFrame frame;
 
+    public boolean multiplayer = false;
+    public GameClient socketClient;
+    public GameServer socketServer;
+    
+    public String userName;
+    
+    private Packet00Login loginPacket;
+    
+    public WindowHandler windowHandler;
+    
     public Board(){
+    	frame = new JFrame();
+    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	frame.setSize(width, height);
+    	frame.setLocationRelativeTo(null);
+    	frame.setTitle("MasterQuestAlpha");
+    	frame.setResizable(false);
+    	frame.add(this);
+    	frame.setVisible(true);
+    	
     	pic2D = background.createGraphics();
     	
     	setFocusable(true);
     	input = new InputHandler(this);
     	mouseHandler = new MouseHandler(this);
     	mouseWheelHandler = new MouseWheelHandler(this);
+    	windowHandler = new WindowHandler(this);
+    	
+    	socketClient = new GameClient(this, "localhost");
+		socketClient.start();
+		
+		if(JOptionPane.showConfirmDialog(this, "Would you like to run a server") == 0){
+			socketServer = new GameServer(this);
+			socketServer.start();
+			socketServer.serverOpen = true;
+		}
+    	
+    	userName = JOptionPane.showInputDialog(this, "Enter username");
+    	loginPacket = new Packet00Login(userName);
+    	loginPacket.writeData(socketClient);
     }
     
     public synchronized void start(){
@@ -63,8 +110,10 @@ public class Board extends Canvas implements Runnable
 	}
     
     public void init(){
+    	board = this;
+    	
     	Assets.init2();
-        manager = new GameManager(input, mouseHandler, mouseWheelHandler);
+        manager = new GameManager(input, mouseHandler, mouseWheelHandler, userName);
         manager.init();
     }
     
@@ -93,6 +142,9 @@ public class Board extends Canvas implements Runnable
 			}
 			for(int i = 0; i < manager.getEntityManager().getAnimals().size(); i++){
 				g.drawImage(manager.getEntityManager().getAnimals().get(i).getImage(), manager.getEntityManager().getAnimals().get(i).getX(), manager.getEntityManager().getAnimals().get(i).getY(), this);
+			}
+			for(int i = 0; i < manager.getEntityManager().players.size(); i++){
+				g.drawImage(manager.getEntityManager().players.get(i).getImage(), manager.getEntityManager().players.get(i).getX(), manager.getEntityManager().players.get(i).getY(), this);
 			}
 			g.drawImage(manager.getStatusBar().getHealth(), 10, 325, this);
 			g.drawImage(manager.getStatusBar().getMagic(), 10, 335, this);
@@ -150,11 +202,23 @@ public class Board extends Canvas implements Runnable
 			render();
 			if(System.currentTimeMillis() - lastTimer >= 1000){
 				lastTimer += 1000;
-				System.out.println("Frames: " + frames + " Ticks: " + ticks);
+				actualFrame = frames;
+				actualTicks = ticks;
+				frame.setTitle("MasterQuestAlpha " + "FPS: " + frames + " Ticks: " + ticks);
+		        socketClient.sendData("ping".getBytes());
 				frames = 0;
 				ticks = 0;
 			}
 		}
 		stop();
+    }
+    
+    public GameManager getManager(){
+    	return manager;
+    }
+
+    public static void main(String[] args){
+    	Board board = new Board();
+    	board.start();
     }
 } 
