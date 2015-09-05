@@ -72,7 +72,7 @@ public class InventoryScrollScreen {
 			if(mouseHandler.mouse.x >= 128 && mouseHandler.mouse.x <= 328){
 				int stand = 0;
 				for(int i = 0; i<(reference/32); i++){
-					if(mouseHandler.mouse.y > (stand+83+scrollOffset) && mouseHandler.mouse.y < (stand+83+32+scrollOffset)){
+					if(mouseHandler.mouse.y > (stand+83+32+scrollOffset) && mouseHandler.mouse.y < (stand+83+32+32+scrollOffset)){
 						itemNumber = (stand/32)+1;
 						isSelected = true;
 						break;

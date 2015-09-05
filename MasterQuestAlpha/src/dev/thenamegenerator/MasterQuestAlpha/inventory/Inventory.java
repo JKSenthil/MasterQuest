@@ -17,6 +17,8 @@ public class Inventory {
 	
 	BufferedImage inven;
 	
+	public int a = 32;
+	
 	public Inventory(InputHandler input, MouseHandler mouseHandler){
 		inven = Assets.inventory;
 		
@@ -57,32 +59,32 @@ public class Inventory {
 		}
 		if(renderInventory){
 			if(mouseHandler.mouse.isPressed()){
-				if(mouseHandler.mouse.x >=(24+32) && mouseHandler.mouse.x <= (59+32)){
-					if(mouseHandler.mouse.y >= (19+32) && mouseHandler.mouse.y <= (46+32)){
+				if(mouseHandler.mouse.x >=(24+32+a) && mouseHandler.mouse.x <= (59+32+a)){
+					if(mouseHandler.mouse.y >= (19+32+a) && mouseHandler.mouse.y <= (46+32+a)){
 						reset();
 						inStats = true;
 						changeScreen = true;
-					}else if(mouseHandler.mouse.y >= (53+32) && mouseHandler.mouse.y <= (80+32)){
+					}else if(mouseHandler.mouse.y >= (53+32+a) && mouseHandler.mouse.y <= (80+32+a)){
 						reset();
 						inMap = true;
 						changeScreen = true;
-					}else if(mouseHandler.mouse.y >= (88+32) && mouseHandler.mouse.y <= (115+32)){
+					}else if(mouseHandler.mouse.y >= (88+32+a) && mouseHandler.mouse.y <= (115+32+a)){
 						reset();
 						inWeapons = true;
 						changeScreen = true;
-					}else if(mouseHandler.mouse.y >= (122+32) && mouseHandler.mouse.y <= (149+32)){
+					}else if(mouseHandler.mouse.y >= (122+32+a) && mouseHandler.mouse.y <= (149+32+a)){
 						reset();
 						inArmor = true;
 						changeScreen = true;
-					}else if(mouseHandler.mouse.y >= (156+32) && mouseHandler.mouse.y <= (183+32)){
+					}else if(mouseHandler.mouse.y >= (156+32+a) && mouseHandler.mouse.y <= (183+32+a)){
 						reset();
 						inPotion = true;
 						changeScreen = true;
-					}else if(mouseHandler.mouse.y >= (190+32) && mouseHandler.mouse.y <= (217+32)){
+					}else if(mouseHandler.mouse.y >= (190+32+a) && mouseHandler.mouse.y <= (217+32+a)){
 						reset();
 						inMagic = true;
 						changeScreen = true;
-					}else if(mouseHandler.mouse.y >= (224+32) && mouseHandler.mouse.y <= (251+32)){
+					}else if(mouseHandler.mouse.y >= (224+32+a) && mouseHandler.mouse.y <= (251+32+a)){
 						reset();
 						inMisc = true;
 						changeScreen = true;

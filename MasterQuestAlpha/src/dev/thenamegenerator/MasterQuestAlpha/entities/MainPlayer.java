@@ -1,5 +1,6 @@
 package dev.thenamegenerator.MasterQuestAlpha.entities;
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import dev.thenamegenerator.MasterQuestAlpha.combat.Combat;
@@ -12,40 +13,68 @@ public class MainPlayer extends Entity{
 	
     private InputHandler input;
     
-    private boolean hasHair = false;
-    private BufferedImage[] hair = {Assets.redHairLeft, Assets.redHairRight, Assets.redHairDown, Assets.redHairUp};
+    protected boolean hasHair = false;
+    protected BufferedImage[] hair = {Assets.redHairLeft, Assets.redHairRight, Assets.redHairDown, Assets.redHairUp};
     
-    private boolean hasArmor = false;
-    private BufferedImage[] armor = {Assets.orangeRobeLeft, Assets.orangeRobeRight, Assets.orangeRobeDown, Assets.orangeRobeUp};
+    protected boolean hasArmor = false;
+    protected BufferedImage[] armor = {Assets.orangeRobeLeft, Assets.orangeRobeRight, Assets.orangeRobeDown, Assets.orangeRobeUp};
     
-    private boolean hasWeapon = false;
-    private BufferedImage[] weapon;
+    protected boolean hasWeapon = false;
+    protected BufferedImage[] weapon = {Assets.lSword, Assets.rSword, Assets.rSword, Assets.rSword};
     
-    private int direction = 1;
+    protected boolean isAttacking = false;
+    protected BufferedImage[] slash = {Assets.lAttack, Assets.rAttack, Assets.dAttack, Assets.uAttack};
     
-    private boolean isAttacking = false;
+    protected String userName;
     
-    private String userName;
+    protected int classNumber;
+    protected double strengthStat;
+    protected double guardStat;
+    protected int level = 25;
+    
+    protected BufferedImage[] body = new BufferedImage[4];
+    
+    protected Rectangle rect;
     
     public MainPlayer(InputHandler input, String userName) {
 		this.input = input;
 		initSprites(Assets.playerLeft, Assets.playerRight, Assets.playerDown, Assets.playerUp);
+		
+		body[0] = left;
+		body[1] = right;
+		body[2] = down;
+		body[3] = up;
+		
 		setLocation(480, 480);
 		setSprite(right);
 		time = System.nanoTime();
 		speed = 5;
-		
 		this.userName = userName;
 		
-		//hasHair = true;
-		hasArmor = true;
+		direction = 1;
 		
-		health = Combat.calcHP(25, 1);
+		hasHair = true;
+		hasArmor = true;
+		hasWeapon = true;
+		
+		//calculate player stats
+		health = 100;
 		magic = 25;
+		classNumber = 1;
+		strengthStat = Combat.calcStrength(level, classNumber);
+		guardStat = Combat.calcGuard(level, classNumber);
 	}
     
     public boolean isAttacking(){
     	return isAttacking;
+    }
+    
+    public void setAttackingTrue(){
+    	isAttacking = true;
+    }
+    
+    public void setAttackingFalse(){
+    	isAttacking = false;
     }
     
     public int getDirection(){
@@ -60,12 +89,20 @@ public class MainPlayer extends Entity{
     	return armor;
     }
     
+    public BufferedImage[] getWeapon(){
+    	return weapon;
+    }
+    
     public boolean hasHair(){
     	return hasHair;
     }
     
     public boolean hasArmor(){
     	return hasArmor;
+    }
+    
+    public boolean hasWeapon(){
+    	return hasWeapon;
     }
  
     public boolean isBothDirectionsUsed(){
@@ -81,42 +118,42 @@ public class MainPlayer extends Entity{
     	if(!isMoving){
     		if(input != null){
     			if(input.up.isPressed()){
-            		dy = -8;
+            		dy = -4;
             		isMoving = true;
-            	if(isBothDirectionsUsed()) {dx = 0;}
-            	if(checkCollision(worldX, worldY - 32)){dy = 0; isMoving = false;}	
-            	setSprite(up);
-            	direction = 3;
-            }
+            		if(isBothDirectionsUsed()) {dx = 0;}
+            		if(checkCollision(worldX, worldY - 32)){dy = 0; isMoving = false;}	
+            		setSprite(up);
+            		direction = 3;
+    			}
     			if(input.down.isPressed()){
-            		dy = 8;
+            		dy = 4;
             		isMoving = true;
-            	if(isBothDirectionsUsed()) {dx = 0;}
-            	if(checkCollision(worldX, worldY + 32)){dy = 0; isMoving = false;}	
-            	setSprite(down);
-            	direction = 2;
-            }
+            		if(isBothDirectionsUsed()) {dx = 0;}
+            		if(checkCollision(worldX, worldY + 32)){dy = 0; isMoving = false;}	
+            		setSprite(down);
+            		direction = 2;
+    			}
     			if(input.left.isPressed()){
-            		dx = -8;
+            		dx = -4;
             		isMoving = true;
-            	if(isBothDirectionsUsed()) {dy = 0;}
-            	if(checkCollision(worldX - 32, worldY)){dx = 0; isMoving = false;}	
-            	setSprite(left);
-            	direction = 0;
-            }
+            		if(isBothDirectionsUsed()) {dy = 0;}
+            		if(checkCollision(worldX - 32, worldY)){dx = 0; isMoving = false;}	
+            		setSprite(left);
+            		direction = 0;
+    			}
     			if(input.right.isPressed()){
-            		dx = 8;
+            		dx = 4;
             		isMoving = true;
-            	if(isBothDirectionsUsed()) {dy = 0;}
-            	if(checkCollision(worldX + 32, worldY)){dx = 0; isMoving = false;}	
-            	setSprite(right);
-            	direction = 1;
-            }
-    	}
+            		if(isBothDirectionsUsed()) {dy = 0;}
+            		if(checkCollision(worldX + 32, worldY)){dx = 0; isMoving = false;}	
+            		setSprite(right);
+            		direction = 1;
+    			}
+    		}
     		time = System.nanoTime();
             prevWorldX = worldX;
             prevWorldY = worldY;
-    }
+    	}
     	if(isMoving){
     		endTime = System.nanoTime();
     		if(endTime - time >= 45000000/speed){
@@ -129,7 +166,7 @@ public class MainPlayer extends Entity{
     			}
         		time = endTime;
     		}
-    		Packet02Move packet = new Packet02Move(this.userName, this.worldX, this.worldY);
+    		Packet02Move packet = new Packet02Move(this.userName, this.worldX, this.worldY, this.direction);
     		packet.writeData(Board.board.socketClient);
     	}
     }
@@ -147,5 +184,20 @@ public class MainPlayer extends Entity{
     public String getUsername(){
     	return userName;
     }
-
+    
+    public void setRect(){
+    	rect = new Rectangle(worldX, worldY, 32, 32);
+    }
+    
+    public void setBigRect(){
+		rect = new Rectangle(worldX, worldY, 40, 40);
+	}
+    
+    public Rectangle getRect(){
+    	return rect;
+    }
+    
+    public int getClassNumber(){
+    	return classNumber;
+    }
 }

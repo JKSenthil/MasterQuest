@@ -9,11 +9,18 @@ import java.net.UnknownHostException;
 
 import dev.thenamegenerator.MasterQuestAlpha.display.Board;
 import dev.thenamegenerator.MasterQuestAlpha.entities.PlayerMP;
+import dev.thenamegenerator.MasterQuestAlpha.magic.Firebolt;
 import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet;
 import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet.PacketTypes;
 import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet00Login;
 import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet01Disconnect;
 import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet02Move;
+import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet03PlayerInfo;
+import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet04MagicLogin;
+import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet05MagicMove;
+import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet06MagicDisconnect;
+import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet07Damage;
+import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet10Slash;
 
 public class GameClient extends Thread{
 	
@@ -57,9 +64,8 @@ public class GameClient extends Thread{
 		case LOGIN:
 			packet = new Packet00Login(data);
 			System.out.println("Client> [" + address.getHostAddress() + ": " + port + "]" + " " + ((Packet00Login)packet).getUsername() + " has joined the game...");
-			PlayerMP player = new PlayerMP(((Packet00Login)packet).getUsername(), address, port);
-			System.out.println(address + " " + port);
-			Board.board.getManager().getEntityManager().players.add(player);
+			PlayerMP player = new PlayerMP(((Packet00Login) packet).getUsername());
+			Board.board.getManager().getEntityManager().addPlayerMP(player);
 			break;
 		case DISCONNECT:
 			packet = new Packet01Disconnect(data);
@@ -69,17 +75,77 @@ public class GameClient extends Thread{
 		case MOVE:
 			packet = new Packet02Move(data);
 			handleMove(((Packet02Move)packet));
+			break;
+		case PLAYERINFO:
+			packet = new Packet03PlayerInfo(data);
+			PlayerMP player1 = new PlayerMP(((Packet03PlayerInfo)packet).getUsername(),((Packet03PlayerInfo)packet).getIpAddress(), ((Packet03PlayerInfo)packet).getPort(), ((Packet03PlayerInfo)packet).getX(), ((Packet03PlayerInfo)packet).getY() );
+			Board.board.getManager().getEntityManager().addPlayerMP(player1);
+			break;
+		case MAGICLOGIN:
+			packet = new Packet04MagicLogin(data);
+			this.handleMagicLogin((Packet04MagicLogin) packet);
+			break;
+		case MAGICMOVE:
+			packet = new Packet05MagicMove(data);
+			this.handleMagicMove((Packet05MagicMove) packet);
+			break;
+		case MAGICDISCONNECT:
+			packet = new Packet06MagicDisconnect(data);
+			for(int i = 0; i < Board.board.getManager().magicMP.size(); i++){
+				if(((Packet06MagicDisconnect) packet).getID() == Board.board.getManager().magicMP.get(i).ID){
+					Board.board.getManager().magicMP.remove(i);
+					break;
+				}
+			}
+			break;
+		case DAMAGE:
+			packet = new Packet07Damage(data);
+			double damage = ((Packet07Damage)packet).getDamage();
+			Board.board.getManager().getPlayer().setHealth(Board.board.getManager().getPlayer().getHealth() - damage);
+			break;
+		case SWORD:
+			packet = new Packet10Slash(data);
+			this.handleSlash((Packet10Slash)packet);
+			break;
+		}
+	}
+
+	private void handleSlash(Packet10Slash packet) {
+		for(PlayerMP p : Board.board.getManager().getEntityManager().players){
+			if(packet.getUsername().equalsIgnoreCase(p.getUsername())){
+				if(packet.isAttacking()){
+					p.setAttackingTrue();
+				}else if(!packet.isAttacking()){
+					p.setAttackingFalse();
+				}
+				break;
+			}
 		}
 	}
 
 	private void handleMove(Packet02Move packet) {
 		if(!packet.getUsername().equalsIgnoreCase(Board.board.getManager().getPlayer().getUsername())){
-			Board.board.getManager().getEntityManager().movePlayer(packet.getUsername(), packet.getX(), packet.getY());
+			Board.board.getManager().getEntityManager().movePlayer(packet.getUsername(), packet.getX(), packet.getY(), packet.getDirection());
+		}
+	}
+	
+	private void handleMagicLogin(Packet04MagicLogin packet){
+		Firebolt fire = new Firebolt(packet.getUsername(), packet.getWorldX(), packet.getWorldY(), packet.getID());
+		Board.board.getManager().magicMP.add(fire);
+	}
+	
+	private void handleMagicMove(Packet05MagicMove packet){
+		for(Firebolt m : Board.board.getManager().magicMP){
+			if(packet.getID() == m.ID){
+				m.setWorldX(packet.getWorldX());
+				m.setWorldY(packet.getWorldY());
+				break;
+			}
 		}
 	}
 
 	public void sendData(byte[] data){
-		DatagramPacket packet = new DatagramPacket(data, data.length, ipAddress, 1331);
+		DatagramPacket packet = new DatagramPacket(data, data.length, ipAddress, 25565);
 		try {
 			socket.send(packet);
 		} catch (IOException e) {

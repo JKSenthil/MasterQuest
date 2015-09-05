@@ -6,7 +6,8 @@ import dev.thenamegenerator.MasterQuestAlpha.net.GameServer;
 public abstract class Packet {
 	
 	public static enum PacketTypes{
-		INVALID(-1), LOGIN(00), DISCONNECT(01), MOVE(02);
+		INVALID(-1), LOGIN(00), DISCONNECT(01), MOVE(02), PLAYERINFO(03), MAGICLOGIN(04), MAGICMOVE(05),
+		MAGICDISCONNECT(06), DAMAGE(07), SWORD(10);
 		
 		private int packetId;
 		private PacketTypes(int packetId){

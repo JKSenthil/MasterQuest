@@ -2,7 +2,6 @@ package dev.thenamegenerator.MasterQuestAlpha.entities;
 
 import java.net.InetAddress;
 
-import dev.thenamegenerator.MasterQuestAlpha.combat.Combat;
 import dev.thenamegenerator.MasterQuestAlpha.gfx.Assets;
 import dev.thenamegenerator.MasterQuestAlpha.input.InputHandler;
 
@@ -17,12 +16,36 @@ public class PlayerMP extends MainPlayer{
 		this.port = port;
 		
 		initSprites(Assets.playerLeft, Assets.playerRight, Assets.playerDown, Assets.playerUp);
+		
+		body[0] = left;
+		body[1] = right;
+		body[2] = down;
+		body[3] = up;
+		
 		setLocation(480, 480);
 		setSprite(right);
-		time = System.nanoTime();
-		speed = 5;
-		health = Combat.calcHP(25, 1);
-		magic = 25;
+		
+		direction = 1;
+		
+		isAttacking = false;
+	}
+	
+	public PlayerMP(String userName){
+		super(null, userName);
+		
+		initSprites(Assets.playerLeft, Assets.playerRight, Assets.playerDown, Assets.playerUp);
+		
+		body[0] = left;
+		body[1] = right;
+		body[2] = down;
+		body[3] = up;
+		
+		setLocation(480, 480);
+		setSprite(right);
+		
+		direction = 1;
+		
+		isAttacking = false;
 	}
 	
 	public PlayerMP(String userName, InetAddress ipAddress, int port) {
@@ -31,8 +54,38 @@ public class PlayerMP extends MainPlayer{
 		this.port = port;
 		
 		initSprites(Assets.playerLeft, Assets.playerRight, Assets.playerDown, Assets.playerUp);
+		
+		body[0] = left;
+		body[1] = right;
+		body[2] = down;
+		body[3] = up;
+		
 		setLocation(480, 480);
 		setSprite(right);
+		
+		direction = 1;
+		
+		isAttacking = false;
+	}
+	
+	public PlayerMP(String userName, InetAddress ipAddress, int port, int x, int y) {
+		super(null, userName);
+		this.ipAddress = ipAddress;
+		this.port = port;
+		
+		initSprites(Assets.playerLeft, Assets.playerRight, Assets.playerDown, Assets.playerUp);
+		
+		body[0] = left;
+		body[1] = right;
+		body[2] = down;
+		body[3] = up;
+		
+		setLocation(x, y);
+		setSprite(right);
+		
+		direction = 1;
+		
+		isAttacking = false;
 	}
 
 }

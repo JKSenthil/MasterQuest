@@ -5,9 +5,9 @@ import java.util.Random;
 
 public class EntityManager {
 
-	ArrayList<Entity> animals;
-	ArrayList<Entity> npc;
-	ArrayList<Entity> mobs;
+	private ArrayList<Entity> animals;
+	private ArrayList<Entity> npc;
+	private ArrayList<Entity> mobs;
 	public ArrayList<PlayerMP> players;
 	
 	public EntityManager(){
@@ -82,16 +82,16 @@ public class EntityManager {
 		return index;
 	}
 	
-	public void movePlayer(String userName, int x, int y){
+	public void movePlayer(String userName, int x, int y, int direction){
 		int index = getPlayerMPIndex(userName);
 		this.players.get(index).setWorldX(x);
 		this.players.get(index).setWorldY(y);
-		
-		this.players.get(index).dispositionX += x;
-		this.players.get(index).dispositionY += y;
-		
-		//this.players.get(index).setX(this.players.get(index).getX() + this.players.get(index).getWorldX() - this.players.get(index).dispositionX);
-		//this.players.get(index).setY(this.players.get(index).getY() + this.players.get(index).getWorldY() - this.players.get(index).dispositionY);
+		this.players.get(index).setDirection(direction);
+		this.players.get(index).setSprite(this.players.get(index).body[direction]);
+	}
+	
+	public void addPlayerMP(PlayerMP p){
+		this.players.add(p);
 	}
 	
 }

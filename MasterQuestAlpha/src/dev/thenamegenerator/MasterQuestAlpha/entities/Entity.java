@@ -12,8 +12,8 @@ public class Entity{
 	protected int worldX, worldY;
 	protected int dispositionX, dispositionY;
 	protected int dx, dy;
-	protected int prevWorldX, prevWorldY;
-	protected int mapX, mapY;
+	protected int prevWorldX;
+	protected int prevWorldY;
 	
 	protected double health;
 	protected double magic;
@@ -29,6 +29,8 @@ public class Entity{
 	
 	protected long time;
 	protected long endTime = 0;
+	
+	protected int direction = 1;
 	
 	public Entity(double health, double speed, String name){
 		this.health = health;
@@ -56,13 +58,6 @@ public class Entity{
 		
 		this.x = x;
 		this.y = y;
-		
-		mapX = x;
-		mapY = y;
-	}
-	
-	public void setRandomLocation(){
-		
 	}
 	
 	public int getStartX(){
@@ -90,8 +85,6 @@ public class Entity{
 		y += dy;
 		dispositionX += dx;
 		dispositionY += dy;
-		mapX += dx;
-		mapY += dy;
 	}
 	
 	public void move(){
@@ -105,21 +98,25 @@ public class Entity{
 					dx = 2;
 					if(checkCollision(worldX + 32, worldY)){dx = 0; isMoving = false;}	
 					setSprite(right);
+					direction = 1;
 				}
 				if(temp == 1){
 					dx = -2;
 					if(checkCollision(worldX - 32, worldY)){dx = 0; isMoving = false;}	
 					setSprite(left);
+					direction = 0;
 				}
 				if(temp == 2){
 					dy = 2;
 					if(checkCollision(worldX, worldY + 32)){dy = 0; isMoving = false;}	
 					setSprite(down);
+					direction = 2;
 				}
 				if(temp == 3){
 					dy = -2;
 					if(checkCollision(worldX, worldY - 32)){dy = 0; isMoving = false;}	
 					setSprite(up);
+					direction = 3;
 				}
 				time = System.nanoTime();
 				prevWorldX = worldX;
@@ -148,20 +145,12 @@ public class Entity{
         return y;
     }
     
-    public int getDispositionX(){
-    	return dispositionX;
+    public void setX(int x){
+    	this.x = x;
     }
     
-    public int getDispositionY(){
-    	return dispositionY;
-    }
-    
-    public int getDX() {
-        return dx;
-    }
-
-    public int getDY() {
-        return dy;
+    public void setY(int y){
+    	this.y = y;
     }
     
     public int getWorldX(){
@@ -180,29 +169,20 @@ public class Entity{
     	this.worldY = y;
     }
     
-    public int getMapX(){
-    	return mapX/32;
+    public int getDispositionX(){
+    	return dispositionX;
     }
     
-    public int getMapY(){
-    	return mapY/32;
+    public int getDispositionY(){
+    	return dispositionY;
     }
     
-    public void updateXandY(int xd, int yd){
-    	x += xd;
-    	y += yd;
+    public int getDX() {
+        return dx;
     }
-    
-    public void setX(int x){
-    	this.x = x;
-    }
-    
-    public void setY(int y){
-    	this.y = y;
-    }
-    
-    public void setHealth(double health){
-    	this.health = health;
+
+    public int getDY() {
+        return dy;
     }
     
     public void reset(){
@@ -210,19 +190,36 @@ public class Entity{
     	dy = 0;
     }
     
-    public BufferedImage getImage(){
-    	return currentSprite;
+    public void setHealth(double health){
+    	this.health = health;
     }
     
     public double getHealth(){
     	return health;
     }
     
+    public BufferedImage getImage(){
+    	return currentSprite;
+    }
+  
     public double getMagic(){
     	return magic;
+    }
+    
+    public void setMagic(double magic){
+    	this.magic = magic;
     }
     
     public boolean checkCollision(int x, int y){
     	return Collision.checkCollisionX(x, y);
     }
+    
+    public int getDirection() {
+		return direction;
+	}
+    
+    public void setDirection(int direction){
+    	this.direction = direction;
+    }
+    
 }

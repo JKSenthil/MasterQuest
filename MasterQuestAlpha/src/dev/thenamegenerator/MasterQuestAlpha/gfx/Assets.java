@@ -67,8 +67,19 @@ public class Assets{
    //weapon icon images
    public static BufferedImage ironShortSword;
    
+   public static BufferedImage rSword;
+   public static BufferedImage lSword;
+   
+   public static BufferedImage rAttack;
+   public static BufferedImage lAttack;
+   public static BufferedImage dAttack;
+   public static BufferedImage uAttack;
+   
    //array of tiles
    public static BufferedImage[] groupTiles;
+   
+   //image of spells
+   public static BufferedImage fireBolt;
    
    public static void init(){
 	   SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("tile/TileSheet.png"));
@@ -301,6 +312,17 @@ public class Assets{
 	   
 	   equipButton = ImageLoader.loadImage("inventory_sprites/equip.png");
 	   trashButton = ImageLoader.loadImage("inventory_sprites/trash.png");
+	   
+	   fireBolt = ImageLoader.loadImage("magic/Fireball.png");
+	   
+	   sheet.changeImage(ImageLoader.loadImage("weapons/Sword.png"));
+	   rSword = sheet.crop(0, 0, 33, 32);
+	   lSword = sheet.crop(33, 0, 33, 32);
+	   
+	   rAttack = ImageLoader.loadImage("weapons/right.png");
+	   lAttack = ImageLoader.loadImage("weapons/left.png");
+	   dAttack = ImageLoader.loadImage("weapons/down.png");
+	   uAttack = ImageLoader.loadImage("weapons/up.png");
    }
    
 }
