@@ -3,22 +3,23 @@ package dev.thenamegenerator.MasterQuestAlpha.net.packets;
 import dev.thenamegenerator.MasterQuestAlpha.net.GameClient;
 import dev.thenamegenerator.MasterQuestAlpha.net.GameServer;
 
-public class Packet07Damage extends Packet{
+public class Packet11Dead extends Packet{
 	
 	private String userName;
-	private double damage;
+	
+	private boolean isAlive;
 
-	public Packet07Damage(byte[] data) {
-		super(07);
+	public Packet11Dead(byte[] data) {
+		super(11);
 		String[] dataArray = readData(data).split(",");
 		this.userName = dataArray[0];
-		this.damage = Double.parseDouble(dataArray[1]);
+		this.isAlive = Boolean.parseBoolean(dataArray[1]);
 	}
 	
-	public Packet07Damage(String userName, double d) {
-		super(07);
+	public Packet11Dead(String userName, boolean isAlive) {
+		super(11);
 		this.userName = userName;
-		this.damage = d;
+		this.isAlive = isAlive;
 	}
 
 	@Override
@@ -33,15 +34,15 @@ public class Packet07Damage extends Packet{
 
 	@Override
 	public byte[] getData() {
-		return ("07" + this.userName + "," + this.damage).getBytes();
+		return ("11" + this.userName + "," + this.isAlive).getBytes();
 	}
 
 	public String getUsername() {
 		return userName;
 	}
 	
-	public double getDamage(){
-		return damage;
+	public boolean isAlive(){
+		return isAlive;
 	}
 	
 }

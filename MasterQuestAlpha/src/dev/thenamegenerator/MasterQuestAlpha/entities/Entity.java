@@ -17,6 +17,12 @@ public class Entity{
 	
 	protected double health;
 	protected double magic;
+	
+	protected int classNumber;
+    protected double strengthStat;
+    protected double guardStat;
+    protected int level = 25;
+
 	protected double speed;
 	protected String name;
 	
@@ -210,6 +216,38 @@ public class Entity{
     	this.magic = magic;
     }
     
+    public int getClassNumber() {
+		return classNumber;
+	}
+
+	public void setClassNumber(int classNumber) {
+		this.classNumber = classNumber;
+	}
+
+	public double getStrengthStat() {
+		return strengthStat;
+	}
+
+	public void setStrengthStat(double strengthStat) {
+		this.strengthStat = strengthStat;
+	}
+
+	public double getGuardStat() {
+		return guardStat;
+	}
+
+	public void setGuardStat(double guardStat) {
+		this.guardStat = guardStat;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+    
     public boolean checkCollision(int x, int y){
     	return Collision.checkCollisionX(x, y);
     }
@@ -220,6 +258,22 @@ public class Entity{
     
     public void setDirection(int direction){
     	this.direction = direction;
+    }
+    
+    public boolean isAlive(){
+    	return isAlive;
+    }
+    
+    public void setAliveTrue(){
+    	this.isAlive = true;
+    }
+    
+    public void setAliveFalse(){
+    	this.isAlive = false;
+    }
+    
+    public void setAlive(boolean isAlive){
+    	this.isAlive = isAlive;
     }
     
 }

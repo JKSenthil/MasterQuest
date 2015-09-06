@@ -8,13 +8,14 @@ import dev.thenamegenerator.MasterQuestAlpha.display.Board;
 import dev.thenamegenerator.MasterQuestAlpha.gfx.Assets;
 import dev.thenamegenerator.MasterQuestAlpha.input.InputHandler;
 import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet02Move;
+import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet03PlayerInfo;
 
 public class MainPlayer extends Entity{
 	
     private InputHandler input;
     
     protected boolean hasHair = false;
-    protected BufferedImage[] hair = {Assets.redHairLeft, Assets.redHairRight, Assets.redHairDown, Assets.redHairUp};
+    protected BufferedImage[] hair = {Assets.blackHairLeft, Assets.blackHairRight, Assets.blackHairDown, Assets.blackHairUp};
     
     protected boolean hasArmor = false;
     protected BufferedImage[] armor = {Assets.orangeRobeLeft, Assets.orangeRobeRight, Assets.orangeRobeDown, Assets.orangeRobeUp};
@@ -26,11 +27,6 @@ public class MainPlayer extends Entity{
     protected BufferedImage[] slash = {Assets.lAttack, Assets.rAttack, Assets.dAttack, Assets.uAttack};
     
     protected String userName;
-    
-    protected int classNumber;
-    protected double strengthStat;
-    protected double guardStat;
-    protected int level = 25;
     
     protected BufferedImage[] body = new BufferedImage[4];
     
@@ -58,9 +54,9 @@ public class MainPlayer extends Entity{
 		hasWeapon = true;
 		
 		//calculate player stats
-		health = 100;
-		magic = 25;
 		classNumber = 1;
+		magic = 25;
+		health = Combat.calcHP(level, classNumber);
 		strengthStat = Combat.calcStrength(level, classNumber);
 		guardStat = Combat.calcGuard(level, classNumber);
 	}
@@ -197,7 +193,8 @@ public class MainPlayer extends Entity{
     	return rect;
     }
     
-    public int getClassNumber(){
-    	return classNumber;
+    public void sendData(){
+    	Packet03PlayerInfo packet = new Packet03PlayerInfo(userName, classNumber, strengthStat, guardStat, level, health);
+    	packet.writeData(Board.board.socketClient);
     }
 }

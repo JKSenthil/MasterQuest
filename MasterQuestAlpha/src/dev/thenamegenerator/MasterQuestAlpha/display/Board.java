@@ -129,6 +129,7 @@ public class Board extends Canvas implements Runnable
 		}
         loginPacket = new Packet00Login(userName);
     	loginPacket.writeData(this.socketClient);
+    	manager.getPlayer().sendData();
     }
     
     public void tick() {
@@ -147,86 +148,102 @@ public class Board extends Canvas implements Runnable
 		//RENDER HERE
 		
 		g.setColor(Color.white);
-		Font font = new Font("Soup of Justice", Font.BOLD, 17);
+		Font font = new Font("Soup of Justice", Font.BOLD, 16);
 		g.setFont(font);
-		
-		if(!manager.getInventoryManager().onInventoryScreen()){
-			g.drawImage(manager.getWorldManager().getCamera().getMapImage(), manager.getWorldManager().getCamera().getX(), manager.getWorldManager().getCamera().getY(), this);
-			g.drawImage(manager.getPlayer().getImage(), playerX, playerY, this);
-			if(manager.getPlayer().hasHair()){
-				g.drawImage(manager.getPlayer().getHair()[manager.getPlayer().getDirection()], playerX + 9, playerY + 3, this);
-			}
-			if(manager.getPlayer().hasArmor()){
-				g.drawImage(manager.getPlayer().getArmor()[manager.getPlayer().getDirection()], playerX, playerY, this);
-			}
-			if(manager.getPlayer().hasWeapon()){
-				if(manager.getPlayer().getDirection() == 2){
-					g.drawImage(manager.getPlayer().getWeapon()[manager.getPlayer().getDirection()], playerX - 11, playerY + 4, this);
-				}else if(manager.getPlayer().getDirection() == 3){
-					g.drawImage(manager.getPlayer().getWeapon()[manager.getPlayer().getDirection()], playerX - 9, playerY + 4, this);
-				}else{
-					g.drawImage(manager.getPlayer().getWeapon()[manager.getPlayer().getDirection()], playerX, playerY, this);
-				}			
-			}
-			if(manager.getPlayer().isAttacking()){
-				if(manager.getPlayer().getDirection() == 0){
-					g.drawImage(Assets.lAttack, playerX - 32, playerY - 32, this);
-				}else if(manager.getPlayer().getDirection() == 1){
-					g.drawImage(Assets.rAttack, playerX + 32, playerY - 32, this);
-				}else if(manager.getPlayer().getDirection() == 2){
-					g.drawImage(Assets.dAttack, playerX - 32, playerY + 32, this);
-				}else if(manager.getPlayer().getDirection() == 3){
-					g.drawImage(Assets.uAttack, playerX - 32, playerY - 32, this);
+		if(!manager.getPlayer().isAlive()){
+			g.drawImage(manager.getScreen().getImage(), 0, 0, this);
+		}else{
+			if(!manager.getInventoryManager().onInventoryScreen()){
+				g.drawImage(manager.getWorldManager().getCamera().getMapImage(), manager.getWorldManager().getCamera().getX(), manager.getWorldManager().getCamera().getY(), this);
+				g.drawImage(manager.getPlayer().getImage(), playerX, playerY, this);
+				if(manager.getPlayer().hasHair()){
+					g.drawImage(manager.getPlayer().getHair()[manager.getPlayer().getDirection()], playerX + 9, playerY + 3, this);
 				}
-			}
-			for(int i = 0; i < manager.getEntityManager().getAnimals().size(); i++){
-				g.drawImage(manager.getEntityManager().getAnimals().get(i).getImage(), manager.getEntityManager().getAnimals().get(i).getX(), manager.getEntityManager().getAnimals().get(i).getY(), this);
-			}
-			for(int i = 0; i < manager.getEntityManager().players.size(); i++){
-				g.drawImage(manager.getEntityManager().players.get(i).getImage(), manager.getEntityManager().players.get(i).getX(), manager.getEntityManager().players.get(i).getY(), this);
-				g.drawString(manager.getEntityManager().players.get(i).getUsername(), manager.getEntityManager().players.get(i).getX(), manager.getEntityManager().players.get(i).getY());
-			}
-			g.drawImage(manager.getStatusBar().getHealth(), 10, 325+64, this);
-			g.drawImage(manager.getStatusBar().getMagic(), 10, 335+64, this);
-			for(int i = 0; i < manager.getMagicMP().size(); i++){
-				g.drawImage(manager.getMagicMP().get(i).getIcon(), manager.getMagicMP().get(i).getX(), manager.getMagicMP().get(i).getY(), this);
-			}
-			for(PlayerMP p : manager.getEntityManager().players){
-				if(p.isAttacking()){
-					if(p.getDirection() == 0){
-						g.drawImage(Assets.lAttack, p.getX() - 32, p.getY() - 32, this);
-					}else if(p.getDirection() == 1){
-						g.drawImage(Assets.rAttack, p.getX()+ 32, p.getY() - 32, this);
-					}else if(p.getDirection() == 2){
-						g.drawImage(Assets.dAttack, p.getX() - 32, p.getY() + 32, this);
-					}else if(p.getDirection() == 3){
-						g.drawImage(Assets.uAttack, p.getX() - 32, p.getY() - 32, this);
+				if(manager.getPlayer().hasArmor()){
+					g.drawImage(manager.getPlayer().getArmor()[manager.getPlayer().getDirection()], playerX, playerY, this);
+				}
+				if(manager.getPlayer().hasWeapon()){
+					if(manager.getPlayer().getDirection() == 2){
+						g.drawImage(manager.getPlayer().getWeapon()[manager.getPlayer().getDirection()], playerX - 11, playerY + 4, this);
+					}else if(manager.getPlayer().getDirection() == 3){
+						g.drawImage(manager.getPlayer().getWeapon()[manager.getPlayer().getDirection()], playerX - 9, playerY + 4, this);
+					}else{
+						g.drawImage(manager.getPlayer().getWeapon()[manager.getPlayer().getDirection()], playerX, playerY, this);
+					}			
+				}
+				if(manager.getPlayer().isAttacking()){
+					if(manager.getPlayer().getDirection() == 0){
+						g.drawImage(Assets.lAttack, playerX - 32, playerY - 32, this);
+					}else if(manager.getPlayer().getDirection() == 1){
+						g.drawImage(Assets.rAttack, playerX + 32, playerY - 32, this);
+					}else if(manager.getPlayer().getDirection() == 2){
+						g.drawImage(Assets.dAttack, playerX - 32, playerY + 32, this);
+					}else if(manager.getPlayer().getDirection() == 3){
+						g.drawImage(Assets.uAttack, playerX - 32, playerY - 32, this);
 					}
 				}
+				for(int i = 0; i < manager.getEntityManager().getAnimals().size(); i++){
+					g.drawImage(manager.getEntityManager().getAnimals().get(i).getImage(), manager.getEntityManager().getAnimals().get(i).getX(), manager.getEntityManager().getAnimals().get(i).getY(), this);
+				}
+				for(int i = 0; i < manager.getEntityManager().players.size(); i++){
+					if(manager.getEntityManager().players.get(i).isAlive()){
+						g.drawImage(manager.getEntityManager().players.get(i).getImage(), manager.getEntityManager().players.get(i).getX(), manager.getEntityManager().players.get(i).getY(), this);
+						g.drawString(manager.getEntityManager().players.get(i).getUsername(), manager.getEntityManager().players.get(i).getX() - ((manager.getEntityManager().players.get(i).getUsername().length())/2 * 5), manager.getEntityManager().players.get(i).getY());
+						g.drawImage(manager.getEntityManager().players.get(i).getHair()[manager.getEntityManager().players.get(i).getDirection()], manager.getEntityManager().players.get(i).getX() + 9, manager.getEntityManager().players.get(i).getY() + 3, this);
+						g.drawImage(manager.getEntityManager().players.get(i).getArmor()[manager.getEntityManager().players.get(i).getDirection()], manager.getEntityManager().players.get(i).getX(), manager.getEntityManager().players.get(i).getY(), this);
+						if(manager.getEntityManager().players.get(i).getClassNumber() == 1){
+							if(manager.getEntityManager().players.get(i).getDirection() == 2){
+								g.drawImage(manager.getPlayer().getWeapon()[manager.getEntityManager().players.get(i).getDirection()], manager.getEntityManager().players.get(i).getX() - 11, manager.getEntityManager().players.get(i).getY() + 4, this);
+							}else if(manager.getEntityManager().players.get(i).getDirection() == 3){
+								g.drawImage(manager.getPlayer().getWeapon()[manager.getEntityManager().players.get(i).getDirection()], manager.getEntityManager().players.get(i).getX() - 9, manager.getEntityManager().players.get(i).getY() + 4, this);
+							}else{
+								g.drawImage(manager.getPlayer().getWeapon()[manager.getEntityManager().players.get(i).getDirection()], manager.getEntityManager().players.get(i).getX(), manager.getEntityManager().players.get(i).getY(), this);
+							}
+						}
+					}
+				}
+				g.drawImage(manager.getStatusBar().getHealth(), 10, 325+64, this);
+				g.drawImage(manager.getStatusBar().getMagic(), 10, 335+64, this);
+				for(int i = 0; i < manager.getMagicMP().size(); i++){
+					g.drawImage(manager.getMagicMP().get(i).getIcon(), manager.getMagicMP().get(i).getX(), manager.getMagicMP().get(i).getY(), this);
+				}
+				for(PlayerMP p : manager.getEntityManager().players){
+					if(p.isAttacking()){
+						if(p.getDirection() == 0){
+							g.drawImage(Assets.lAttack, p.getX() - 32, p.getY() - 32, this);
+						}else if(p.getDirection() == 1){
+							g.drawImage(Assets.rAttack, p.getX()+ 32, p.getY() - 32, this);
+						}else if(p.getDirection() == 2){
+							g.drawImage(Assets.dAttack, p.getX() - 32, p.getY() + 32, this);
+						}else if(p.getDirection() == 3){
+							g.drawImage(Assets.uAttack, p.getX() - 32, p.getY() - 32, this);
+						}
+					}
+				}
+				//render the usernames on the player heads
+				if(manager.getPlayer().getUsername() != null){
+					g.drawString(manager.getPlayer().getUsername(), playerX - ((manager.getPlayer().getUsername().length())/2 * 5), playerY - 10);
+				}
+				backgroundDo = true;
 			}
-			//render the usernames on the player heads
-			if(manager.getPlayer().getUsername() != null){
-				g.drawString(manager.getPlayer().getUsername(), playerX, playerY - 10);
-			}
-			backgroundDo = true;
-		}
-		if(manager.getInventoryManager().onInventoryScreen()){
-			if(backgroundDo){
-				pic2D.fillRect(0, 0, width, height);
-				pic2D.drawImage(manager.getWorldManager().getCamera().getMapImage(), manager.getWorldManager().getCamera().getX(), manager.getWorldManager().getCamera().getY(), this);
-				pic2D.drawImage(manager.getPlayer().getImage(), manager.getPlayer().getX(), manager.getPlayer().getY(), this);
-				backgroundDo = false;
-			}
-			g.drawImage(background, 0, 0, this);
-			g.drawImage(manager.getInventoryManager().getInventory().getImage(), 64, 64, this);
-			if(manager.getInventoryManager().getInventory().inMap){
-				g.drawImage(manager.getInventoryManager().getInventoryWorldMap().getRealWorldMap(), 128 + 32, 83 + 32, this);
-			}else{
-				g.drawImage(manager.getInventoryManager().getInventoryScrollScreen().getScrollScreen(), 128 + 32, 83 + 32, this);
-				if(manager.getInventoryManager().isItemSelected()){
-					g.drawString(manager.getInventoryManager().getDescription(), 332+32, 260+32);
-					g.drawImage(manager.getInventoryManager().getAction().getEquip(), 342+32, 90+32, this);
-					g.drawImage(manager.getInventoryManager().getAction().getTrash(), 342+32, 130+32, this);
+			if(manager.getInventoryManager().onInventoryScreen()){
+				if(backgroundDo){
+					pic2D.fillRect(0, 0, width, height);
+					pic2D.drawImage(manager.getWorldManager().getCamera().getMapImage(), manager.getWorldManager().getCamera().getX(), manager.getWorldManager().getCamera().getY(), this);
+					pic2D.drawImage(manager.getPlayer().getImage(), manager.getPlayer().getX(), manager.getPlayer().getY(), this);
+					backgroundDo = false;
+				}
+				g.drawImage(background, 0, 0, this);
+				g.drawImage(manager.getInventoryManager().getInventory().getImage(), 64, 64, this);
+				if(manager.getInventoryManager().getInventory().inMap){
+					g.drawImage(manager.getInventoryManager().getInventoryWorldMap().getRealWorldMap(), 128 + 32, 83 + 32, this);
+				}else{
+					g.drawImage(manager.getInventoryManager().getInventoryScrollScreen().getScrollScreen(), 128 + 32, 83 + 32, this);
+					if(manager.getInventoryManager().isItemSelected()){
+						g.drawString(manager.getInventoryManager().getDescription(), 332+32, 260+32);
+						g.drawImage(manager.getInventoryManager().getAction().getEquip(), 342+32, 90+32, this);
+						g.drawImage(manager.getInventoryManager().getAction().getTrash(), 342+32, 130+32, this);
+					}
 				}
 			}
 		}

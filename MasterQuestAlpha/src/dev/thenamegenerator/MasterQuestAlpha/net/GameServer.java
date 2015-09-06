@@ -27,11 +27,13 @@ import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet.PacketTypes;
 import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet00Login;
 import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet01Disconnect;
 import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet02Move;
+import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet03PlayerInfo;
 import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet04MagicLogin;
 import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet05MagicMove;
 import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet06MagicDisconnect;
 import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet07Damage;
 import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet10Slash;
+import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet11Dead;
 
 public class GameServer extends Thread{
 	
@@ -50,8 +52,6 @@ public class GameServer extends Thread{
 	private JTextArea textArea_1;
 	
 	private int index = 1;
-	
-	private boolean runOnce = false;
 	
 	public GameServer(Board board){
 		this.board = board;
@@ -144,6 +144,10 @@ public class GameServer extends Thread{
 			packet = new Packet02Move(data);
 			this.handleMove(((Packet02Move)packet));
 			break;
+		case PLAYERINFO:
+			packet = new Packet03PlayerInfo(data);
+			this.handlePlayerInfo((Packet03PlayerInfo) packet);
+			break;
 		case MAGICLOGIN:
 			packet = new Packet04MagicLogin(data);
 			this.addMagicConnection((Packet04MagicLogin) packet);
@@ -180,9 +184,31 @@ public class GameServer extends Thread{
 			packet = new Packet10Slash(data);
 			this.handleSlash((Packet10Slash)packet);
 			break;
+		case DEATH:
+			packet = new Packet11Dead(data);
+			this.getPlayerMP(((Packet11Dead) packet).getUsername()).setAlive(((Packet11Dead) packet).isAlive());
+			for(PlayerMP p : this.connectedPlayers){
+				if(!p.getUsername().equalsIgnoreCase(((Packet11Dead) packet).getUsername())){
+					sendData(((Packet11Dead)packet).getData(), p.ipAddress, p.port);
+				}
+			}
+			break;
 		}
 	}
 	
+	private void handlePlayerInfo(Packet03PlayerInfo packet) {
+		for(PlayerMP p : this.connectedPlayers){
+			if(p.getUsername().equalsIgnoreCase(packet.getUsername())){
+				p.setClassNumber(packet.getClassNumber());
+				p.setStrengthStat(packet.getStrengthStat());
+				p.setGuardStat(packet.getGuardStat());
+				p.setLevel(packet.getLevel());
+			}else{
+				sendData(packet.getData(), p.ipAddress, p.port);
+			}
+		}
+	}
+
 	private void handleSlash(Packet10Slash packet){
 		for(PlayerMP p : this.connectedPlayers){
 			if(!p.getUsername().equalsIgnoreCase(packet.getUsername())){
@@ -247,8 +273,8 @@ public class GameServer extends Thread{
 			}else{
 				sendData(packet.getData(), p.ipAddress, p.port);
 				
-				packet = new Packet00Login(p.getUsername());
-                sendData(packet.getData(), player.ipAddress, player.port);
+				Packet00Login packet1 = new Packet00Login(p.getUsername());
+                sendData(packet1.getData(), player.ipAddress, player.port);
 			}
 		}
 		if(!alreadyConnected){
@@ -257,6 +283,14 @@ public class GameServer extends Thread{
 			for(Firebolt e: magic){
 				packetM = new Packet04MagicLogin(e.username, e.getWorldX(), e.getWorldY(), e.ID);
 				sendData(packetM.getData(), player.ipAddress, player.port);
+			}
+			for(PlayerMP p : this.connectedPlayers){
+				if(!player.getUsername().equalsIgnoreCase(p.getUsername())){
+					Packet03PlayerInfo packetP = new Packet03PlayerInfo(p.getUsername(), p.getClassNumber(), p.getStrengthStat(), p.getGuardStat(), p.getLevel(), p.getHealth());
+					sendData(packetP.getData(), player.ipAddress, player.port);
+					Packet02Move packetMove = new Packet02Move(p.getUsername(), p.getWorldX(), p.getWorldY(), p.getDirection());
+					sendData(packetMove.getData(), player.ipAddress, player.port);
+				}
 			}
 		}
 		System.out.println("Server> [" + player.ipAddress.getHostAddress() + ": " + player.port + "]" + " " + ((Packet00Login)packet).getUsername() + " has connected.");

@@ -1,8 +1,5 @@
 package dev.thenamegenerator.MasterQuestAlpha.net.packets;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 import dev.thenamegenerator.MasterQuestAlpha.net.GameClient;
 import dev.thenamegenerator.MasterQuestAlpha.net.GameServer;
 
@@ -10,36 +7,31 @@ public class Packet03PlayerInfo extends Packet{
 	
 	private String userName;
 	
-	private int x,y;
-	
-	private InetAddress ipAddress;
-	private int port;
+	private int classNumber;
+    private double strengthStat;
+    private double guardStat;
+    private int level;
+    private double health;
 
 	public Packet03PlayerInfo(byte[] data) {
 		super(03);
 		String[] dataArray = readData(data).split(",");
 		this.userName = dataArray[0];
-		this.x = Integer.parseInt(dataArray[1]);
-		this.y = Integer.parseInt(dataArray[2]);
-		
-		try {
-			this.ipAddress = InetAddress.getByName(dataArray[3]);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-		
-		this.port = Integer.parseInt(dataArray[4]);
+		this.classNumber = Integer.parseInt(dataArray[1]);
+		this.strengthStat = Double.parseDouble(dataArray[2]);
+		this.guardStat = Double.parseDouble(dataArray[3]);
+		this.level = Integer.parseInt(dataArray[4]);
+		this.health = Double.parseDouble(dataArray[5]);
 	}
 	
-	public Packet03PlayerInfo(String userName, int x, int y, InetAddress ipAddress, int port) {
+	public Packet03PlayerInfo(String userName, int classNumber, double strengthStat, double guardStat, int level, double health) {
 		super(03);
 		this.userName = userName;
-		
-		this.x = x;
-		this.y = y;
-		
-		this.ipAddress = ipAddress;
-		this.port = port;
+		this.classNumber = classNumber;
+		this.strengthStat = strengthStat;
+		this.guardStat = guardStat;
+		this.level = level;
+		this.health = health;
 	}
 
 	@Override
@@ -54,27 +46,30 @@ public class Packet03PlayerInfo extends Packet{
 
 	@Override
 	public byte[] getData() {
-		return ("03" + this.userName + "," + this.x + "," + this.y + "," + this.ipAddress + "," + this.port).getBytes();
+		return ("03" + this.userName + "," + this.classNumber + "," + this.strengthStat + "," + this.guardStat + "," + this.level + "," + this.health).getBytes();
 	}
 
 	public String getUsername() {
 		return userName;
 	}
-	
-	public int getX(){
-		return this.x;
+
+	public int getClassNumber() {
+		return classNumber;
+	}
+
+	public double getStrengthStat() {
+		return strengthStat;
+	}
+
+	public double getGuardStat() {
+		return guardStat;
+	}
+
+	public int getLevel() {
+		return level;
 	}
 	
-	public int getY(){
-		return this.y;
+	public double getHealth(){
+		return health;
 	}
-	
-	public InetAddress getIpAddress(){
-		return ipAddress;
-	}
-	
-	public int getPort(){
-		return port;
-	}
-	
 }

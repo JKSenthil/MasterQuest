@@ -6,6 +6,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Random;
 
 import dev.thenamegenerator.MasterQuestAlpha.display.Board;
 import dev.thenamegenerator.MasterQuestAlpha.entities.PlayerMP;
@@ -21,6 +22,7 @@ import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet05MagicMove;
 import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet06MagicDisconnect;
 import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet07Damage;
 import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet10Slash;
+import dev.thenamegenerator.MasterQuestAlpha.net.packets.Packet11Dead;
 
 public class GameClient extends Thread{
 	
@@ -78,8 +80,7 @@ public class GameClient extends Thread{
 			break;
 		case PLAYERINFO:
 			packet = new Packet03PlayerInfo(data);
-			PlayerMP player1 = new PlayerMP(((Packet03PlayerInfo)packet).getUsername(),((Packet03PlayerInfo)packet).getIpAddress(), ((Packet03PlayerInfo)packet).getPort(), ((Packet03PlayerInfo)packet).getX(), ((Packet03PlayerInfo)packet).getY() );
-			Board.board.getManager().getEntityManager().addPlayerMP(player1);
+			this.handlePlayerInfo((Packet03PlayerInfo) packet);
 			break;
 		case MAGICLOGIN:
 			packet = new Packet04MagicLogin(data);
@@ -107,6 +108,32 @@ public class GameClient extends Thread{
 			packet = new Packet10Slash(data);
 			this.handleSlash((Packet10Slash)packet);
 			break;
+		case DEATH:
+			packet = new Packet11Dead(data);
+			this.getPlayerMP(((Packet11Dead)packet).getUsername()).setAlive(((Packet11Dead)packet).isAlive());;
+			break;
+		}
+	}
+	
+	public PlayerMP getPlayerMP(String userName){
+		for(PlayerMP p : Board.board.getManager().getEntityManager().players){
+			if(p.getUsername().equalsIgnoreCase(userName)){
+				return p;
+			}
+		}
+		return null;
+	}
+
+	private void handlePlayerInfo(Packet03PlayerInfo packet) {
+		for(PlayerMP p : Board.board.getManager().getEntityManager().players){
+			if(p.getUsername().equalsIgnoreCase(packet.getUsername())){
+				p.setClassNumber(packet.getClassNumber());
+				p.setStrengthStat(packet.getStrengthStat());
+				p.setGuardStat(packet.getGuardStat());
+				p.setLevel(packet.getLevel());
+				p.setHealth(packet.getHealth());
+				break;
+			}
 		}
 	}
 
