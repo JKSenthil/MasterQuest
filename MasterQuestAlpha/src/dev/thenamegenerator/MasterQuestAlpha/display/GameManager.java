@@ -147,7 +147,7 @@ public class GameManager{
 							magicMP.get(i).setRect();
 							if(magicMP.get(i).getRect().intersects(p.getRect())){			
 								//does damage
-								Packet07Damage pDamage = new Packet07Damage(p.getUsername(), 10);
+								Packet07Damage pDamage = new Packet07Damage(p.getUsername(), Combat.calcMagicDamage(player.getLevel(), p.getLevel(), player.getMagic(), p.getGuardStat(), p.getHealth()));
 								pDamage.writeData(Board.board.socketClient);
 								//removes magic
 								Packet06MagicDisconnect packet = new Packet06MagicDisconnect(player.getUsername(), magicMP.get(i).ID);
@@ -185,6 +185,7 @@ public class GameManager{
 					player.setWorldY(y*32);
 					player.setAliveTrue();
 					player.setHealth(Combat.calcHP(player.getLevel(), player.getClassNumber()));
+					player.setMagic(Combat.calcMagic(player.getLevel(), player.getClassNumber()));
 					Packet02Move packet = new Packet02Move(player.getUsername(), player.getWorldX(), player.getWorldY(), player.getDirection());
 					packet.writeData(Board.board.socketClient);
 					Packet11Dead packetP = new Packet11Dead(player.getUsername(), player.isAlive());
@@ -231,7 +232,6 @@ public class GameManager{
 				if(names.size() == 0){
 					int pX = p.getWorldX()/32;
 					int pY = p.getWorldY()/32;
-					//System.out.println(pX + " " + pY);
 					if(player.getDirection() == 0){
 						if(tempX == pX + 1){
 							if(tempY == pY || tempY == pY - 1 || tempY == pY + 1){
@@ -265,46 +265,63 @@ public class GameManager{
 							}
 						}
 					}
+					if(tempX == pX && tempY == pY){
+						Packet07Damage pDamage = new Packet07Damage(p.getUsername(), Combat.calculateDamage(player.getLevel(), p.getLevel(), player.getStrengthStat(), p.getGuardStat(), p.getHealth()));
+						pDamage.writeData(Board.board.socketClient);
+						names.add(p.getUsername());
+					}
 				}else{
-					for(String g : names){
-						if(!g.equalsIgnoreCase(p.getUsername())){
-							int pX = p.getWorldX()/32;
-							int pY = p.getWorldY()/32;
-							//System.out.println(pX + " " + pY);
-							if(player.getDirection() == 0){
-								if(tempX == pX + 1){
-									if(tempY == pY || tempY == pY - 1 || tempY == pY + 1){
-										Packet07Damage pDamage = new Packet07Damage(p.getUsername(), Combat.calculateDamage(player.getLevel(), p.getLevel(), player.getStrengthStat(), p.getGuardStat(), p.getHealth()));
-										pDamage.writeData(Board.board.socketClient);
-										names.add(p.getUsername());
-									}
+					List<String> tempNames = new ArrayList<String>();
+					boolean isTaking = false;
+					for(String l : this.names){
+						if(l.equalsIgnoreCase(p.getUsername())){
+							isTaking = true;
+							break;
+						}
+					}
+					if(!isTaking){
+						int pX = p.getWorldX()/32;
+						int pY = p.getWorldY()/32;
+						if(player.getDirection() == 0){
+							if(tempX == pX + 1){
+								if(tempY == pY || tempY == pY - 1 || tempY == pY + 1){
+									Packet07Damage pDamage = new Packet07Damage(p.getUsername(), Combat.calculateDamage(player.getLevel(), p.getLevel(), player.getStrengthStat(), p.getGuardStat(), p.getHealth()));
+									pDamage.writeData(Board.board.socketClient);
+									tempNames.add(p.getUsername());
 								}
-							}else if(player.getDirection() == 1){
-								if(tempX == pX - 1){
-									if(tempY == pY || tempY == pY - 1 || tempY == pY + 1){
-										Packet07Damage pDamage = new Packet07Damage(p.getUsername(), Combat.calculateDamage(player.getLevel(), p.getLevel(), player.getStrengthStat(), p.getGuardStat(), p.getHealth()));
-										pDamage.writeData(Board.board.socketClient);
-										names.add(p.getUsername());
-									}
-								}	
-							}else if(player.getDirection() == 2){
-								if(tempY == pY - 1){
-									if(tempX == pX || tempX == pX + 1 || tempX == pX -1){
-										Packet07Damage pDamage = new Packet07Damage(p.getUsername(), Combat.calculateDamage(player.getLevel(), p.getLevel(), player.getStrengthStat(), p.getGuardStat(), p.getHealth()));
-										pDamage.writeData(Board.board.socketClient);
-										names.add(p.getUsername());
-									}
+							}
+						}else if(player.getDirection() == 1){
+							if(tempX == pX - 1){
+								if(tempY == pY || tempY == pY - 1 || tempY == pY + 1){
+									Packet07Damage pDamage = new Packet07Damage(p.getUsername(), Combat.calculateDamage(player.getLevel(), p.getLevel(), player.getStrengthStat(), p.getGuardStat(), p.getHealth()));
+									pDamage.writeData(Board.board.socketClient);
+									tempNames.add(p.getUsername());
+								}								}	
+						}else if(player.getDirection() == 2){
+							if(tempY == pY - 1){
+								if(tempX == pX || tempX == pX + 1 || tempX == pX -1){
+									Packet07Damage pDamage = new Packet07Damage(p.getUsername(), Combat.calculateDamage(player.getLevel(), p.getLevel(), player.getStrengthStat(), p.getGuardStat(), p.getHealth()));
+									pDamage.writeData(Board.board.socketClient);
+									tempNames.add(p.getUsername());
 								}
-							}else if(player.getDirection() == 3){
-								if(tempY == pY + 1){
-									if(tempX == pX || tempX == pX + 1 || tempX == pX -1){
-										Packet07Damage pDamage = new Packet07Damage(p.getUsername(), Combat.calculateDamage(player.getLevel(), p.getLevel(), player.getStrengthStat(), p.getGuardStat(), p.getHealth()));
-										pDamage.writeData(Board.board.socketClient);
-										names.add(p.getUsername());
-									}
+							}
+						}else if(player.getDirection() == 3){
+							if(tempY == pY + 1){
+								if(tempX == pX || tempX == pX + 1 || tempX == pX -1){
+									Packet07Damage pDamage = new Packet07Damage(p.getUsername(), Combat.calculateDamage(player.getLevel(), p.getLevel(), player.getStrengthStat(), p.getGuardStat(), p.getHealth()));
+									pDamage.writeData(Board.board.socketClient);
+									tempNames.add(p.getUsername());
 								}
 							}
 						}
+						if(tempX == pX && tempY == pY){
+							Packet07Damage pDamage = new Packet07Damage(p.getUsername(), Combat.calculateDamage(player.getLevel(), p.getLevel(), player.getStrengthStat(), p.getGuardStat(), p.getHealth()));
+							pDamage.writeData(Board.board.socketClient);
+							tempNames.add(p.getUsername());
+						}
+					}
+					for(String m : tempNames){
+						names.add(m);
 					}
 				}
 			}

@@ -282,7 +282,6 @@ public class Board extends Canvas implements Runnable
 				actualFrame = frames;
 				actualTicks = ticks;
 				frame.setTitle("MasterQuestAlpha " + "FPS: " + frames + " Ticks: " + ticks);
-		        socketClient.sendData("ping".getBytes());
 				frames = 0;
 				ticks = 0;
 			}

@@ -55,7 +55,7 @@ public class MainPlayer extends Entity{
 		
 		//calculate player stats
 		classNumber = 1;
-		magic = 25;
+		magic = Combat.calcMagic(level, classNumber);
 		health = Combat.calcHP(level, classNumber);
 		strengthStat = Combat.calcStrength(level, classNumber);
 		guardStat = Combat.calcGuard(level, classNumber);
